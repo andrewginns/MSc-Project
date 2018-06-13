@@ -21,6 +21,12 @@ Graph Transform Tools reference
 * https://github.com/tensorflow/tensorflow/blob/r1.6/tensorflow/tools/graph_transforms/README.md
 * https://www.tensorflow.org/versions/r1.6/mobile/prepare_models
 
+Movidius Reference
+* https://movidius.github.io/ncsdk/
+
+TFLite reference
+* https://github.com/tensorflow/tensorflow/blob/r1.6/tensorflow/contrib/lite/toco/g3doc/cmdline_examples.md
+
 ## Training a model
 * git clone https://github.com/andrewginns/CycleGAN-Tensorflow-PyTorch
 
