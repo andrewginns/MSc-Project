@@ -39,6 +39,8 @@ Overview of commands used to generate the required outputs
 
 * bazel build tensorflow/tools/graph_transforms:transform_graph
 
+* bazel build tensorflow/contrib/lite/toco:toco
+
 
 ## Using the tools
 
