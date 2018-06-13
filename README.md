@@ -60,7 +60,7 @@ Overview of commands used to generate the required outputs
 
 * bazel run tensorflow/tools/benchmark:benchmark_model -- --graph=/tmp/frozen_graph.pb --show_sizes=true --show_flops=false --input_layer=inputA --input_layer_type=float --input_layer_shape="1,256,256,3" --output_layer=a2b_generator/output_image
 
-### Optimised the model
+### Optimise the model
 
 * bazel-bin/tensorflow/tools/graph_transforms/transform_graph --in_graph=/tmp/frozen_graph.pb --out_graph=/tmp/optimized_graph.pb --inputs='inputA' --outputs='a2b_generator/output_image' --transforms='
   strip_unused_nodes(type=float, shape="1,256,256,3")
