@@ -78,3 +78,18 @@ Overview of commands used to generate the required outputs
 * cd ~/
 
 * mvNCCompile /tmp/optimized_graph.pb -in inputA -on a2b_generator/output_image
+
+
+## Convert the model to a TFLite model
+
+* cd tensorflow-1.6
+
+* bazel run --config=opt \
+  //tensorflow/contrib/lite/toco:toco -- \
+  --input_file=/tmp/optimized_graph.pb \
+  --output_file=/tmp/graph.lite \
+  --input_format=TENSORFLOW_GRAPHDEF \
+  --output_format=TFLITE \
+  --input_shape=1,256,256,3 \
+  --input_array=inputA \
+  --output_array=output_image
