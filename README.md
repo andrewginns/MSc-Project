@@ -95,3 +95,14 @@ Overview of commands used to generate the required outputs
   --input_shape=1,256,256,3 \
   --input_array=inputA \
   --output_array=output_image
+  
+## Useful commands
+Remove bazel
+* rm -fr ~/.bazel ~/.bazelrc ~/.cache/bazel
+
+Install bazel
+* sudo apt-get install pkg-config zip g++ zlib1g-dev unzip python
+* wget https://github.com/bazelbuild/bazel/releases/download/0.11.0/bazel-0.11.0-installer-linux-x86_64.sh
+* chmod +x bazel-0.11.0-installer-linux-x86_64.sh
+* ./bazel-0.11.0-installer-linux-x86_64.sh --user
+* export PATH="$PATH:$HOME/bin"
