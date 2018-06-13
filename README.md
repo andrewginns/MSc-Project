@@ -15,7 +15,9 @@ Repo for MSc Advanced Project for the degree of Advanced Computing at the Univer
 
 Overview of commands used to generate the required outputs
 
-Graph Transform Tools reference: https://github.com/tensorflow/tensorflow/blob/r1.6/tensorflow/tools/graph_transforms/README.md
+Graph Transform Tools reference
+* https://github.com/tensorflow/tensorflow/blob/r1.6/tensorflow/tools/graph_transforms/README.md
+* https://www.tensorflow.org/versions/r1.6/mobile/prepare_models
 
 ## Training a model
 * git clone https://github.com/andrewginns/CycleGAN-Tensorflow-PyTorch
