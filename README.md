@@ -49,25 +49,26 @@ TFLite reference
 
 * bazel build tensorflow/tools/benchmark:benchmark_model
 
-* bazel build tensorflow/tools/graph_transforms:transform_graph
+* bazel build tensorflow/python/tools:optimize_for_inference
 
 * bazel build tensorflow/contrib/lite/toco:toco
 
 All-in-one
-*bazel build tensorflow/tools/graph_transforms:summarize_graph && bazel build tensorflow/python/tools:freeze_graph && bazel build tensorflow/tools/benchmark:benchmark_model && bazel build tensorflow/tools/graph_transforms:transform_graph && bazel build tensorflow/contrib/lite/toco:toco*
+*bazel build tensorflow/tools/graph_transforms:summarize_graph && bazel build tensorflow/python/tools:freeze_graph && bazel build tensorflow/tools/benchmark:benchmark_model && bazel build tensorflow/python/tools:optimize_for_inference && bazel build tensorflow/contrib/lite/toco:toco*
 
 
 ## Using the tools
 
-* Copy all files from CycleGAN-Tensorflow-PyTorch/outputs/checkpoints/summer2winter_yosemite to tensorflow-1.6.0 folder
-
 ### Summarize GrafDef proto to view nodes and other info
 
+* Copy the graph.pb from outputs/checkpoints/dataset to tensorflow-1.6.0 folder
 * bazel-bin/tensorflow/tools/graph_transforms/summarize_graph --in_graph=graph.pb
+* Note the input and output nodes
 
 ### Freeze the graph by combining the GrafDef proto and the checkpoints
 
-* bazel-bin/tensorflow/python/tools/freeze_graph --input_graph=graph.pb --input_checkpoint="Epoch_(0)_(57of962).ckpt" --output_graph=/tmp/frozen_graph.pb --output_node_names=a2b_generator/output_image
+* cd CycleGAN-Tensorflow-PyTorch
+* python freeze.py
 
 ### Summarize the GraphDef to view nodes and other info, should be reduced compared to the graph.pb
 
@@ -79,11 +80,7 @@ All-in-one
 
 ### Optimise the model
 
-* bazel-bin/tensorflow/tools/graph_transforms/transform_graph --in_graph=/tmp/frozen_graph.pb --out_graph=/tmp/optimized_graph.pb --inputs='inputA' --outputs='a2b_generator/output_image' --transforms='
-  strip_unused_nodes(type=float, shape="1,256,256,3")
-  remove_nodes(op=Identity, op=CheckNumerics)
-  fold_constants(ignore_errors=false)
-  fold_batch_norms'
+* bazel-bin/tensorflow/python/tools/optimize_for_inference --input=/tmp/frozen_graph.pb --output=/tmp/optimized_cycle_graph.pb --frozen_graph=True --input_names=inputA --output_names=a2b_generator/output_image
  
 ### Benchmark the optimised model
 
