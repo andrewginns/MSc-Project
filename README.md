@@ -49,7 +49,7 @@ TFLite reference
 
 * bazel build tensorflow/tools/benchmark:benchmark_model
 
-* bazel build tensorflow/python/tools:optimize_for_inference
+* bazel build tensorflow/tools/graph_transforms:transform_graph
 
 * bazel build tensorflow/contrib/lite/toco:toco
 
@@ -80,7 +80,7 @@ All-in-one
 
 ### Optimise the model
 
-* bazel-bin/tensorflow/python/tools/optimize_for_inference --input=/tmp/frozen_graph.pb --output=/tmp/optimized_cycle_graph.pb --frozen_graph=True --input_names=inputA --output_names=a2b_generator/output_image
+* bazel-bin/tensorflow/tools/graph_transforms/transform_graph --in_graph=/tmp/frozen_graph.pb --out_graph=/tmp/optimized_graph.pb --inputs='inputA' --outputs='a2b_generator/output_image' --transforms=' strip_unused_nodes(type=float, shape="1,256,256,3") remove_nodes(op=Identity, op=CheckNumerics) fold_constants(ignore_errors=false) fold_batch_norms'
  
 ### Benchmark the optimised model
 
