@@ -53,7 +53,8 @@ TFLite reference
 
 * bazel build tensorflow/contrib/lite/toco:toco
 
-*All-in-one bazel build tensorflow/tools/graph_transforms:summarize_graph && bazel build tensorflow/python/tools:freeze_graph && bazel build tensorflow/tools/benchmark:benchmark_model && bazel build tensorflow/tools/graph_transforms:transform_graph && bazel build tensorflow/contrib/lite/toco:toco*
+All-in-one
+*bazel build tensorflow/tools/graph_transforms:summarize_graph && bazel build tensorflow/python/tools:freeze_graph && bazel build tensorflow/tools/benchmark:benchmark_model && bazel build tensorflow/tools/graph_transforms:transform_graph && bazel build tensorflow/contrib/lite/toco:toco*
 
 
 ## Using the tools
