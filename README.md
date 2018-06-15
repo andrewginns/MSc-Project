@@ -4,6 +4,8 @@ Repo for MSc Advanced Project for the degree of Advanced Computing at the Univer
 ### Core code https://github.com/andrewginns/CycleGAN-Tensorflow-PyTorch
 ### Files https://github.com/andrewginns/CycleGAN-Tensorflow-PyTorch/releases
 
+## Instructions for use: https://github.com/andrewginns/MSc-Project/blob/master/instructions.md
+
 # Requirements for reproduction
 * Ubuntu 16.04.4
 * Movidius Neural Compute Stick
@@ -14,7 +16,7 @@ Repo for MSc Advanced Project for the degree of Advanced Computing at the Univer
 * Python 2.7.12
 * CycleGAN code from https://github.com/andrewginns/CycleGAN-Tensorflow-PyTorch
 
-# Instructions for use
+# Command Reference
 
 Overview of commands used to generate the required outputs
 
