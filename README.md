@@ -2,6 +2,7 @@
 Repo for MSc Advanced Project for the degree of Advanced Computing at the University of Bristol
 
 ### Core code https://github.com/andrewginns/CycleGAN-Tensorflow-PyTorch
+### Files https://github.com/andrewginns/CycleGAN-Tensorflow-PyTorch/releases
 
 # Requirements for reproduction
 * Ubuntu 16.04.4
