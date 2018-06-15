@@ -80,11 +80,11 @@ All-in-one
 
 ### Optimise the model
 
-* bazel-bin/tensorflow/tools/graph_transforms/transform_graph --in_graph=/tmp/frozen_graph.pb --out_graph=/tmp/optimized_graph.pb --inputs='inputA' --outputs='a2b_generator/output_image' --transforms=' strip_unused_nodes(type=float, shape="1,256,256,3") remove_nodes(op=Identity, op=CheckNumerics) fold_constants(ignore_errors=false) fold_batch_norms'
+* bazel-bin/tensorflow/tools/graph_transforms/transform_graph --in_graph=~/Desktop/vBox/frozen_graph.pb --out_graph=~/Desktop/vBox/optimized_graph.pb --inputs=‘inputA’ --outputs='a2b_generator/output_image' --transforms=' strip_unused_nodes(type=float, shape="1,256,256,3") remove_nodes(op=Identity, op=CheckNumerics) fold_batch_norms'
  
 ### Benchmark the optimised model
 
-* bazel run tensorflow/tools/benchmark:benchmark_model -- --graph=/tmp/optimized_graph.pb --show_sizes=true --show_flops=false --input_layer=inputA --input_layer_type=float --input_layer_shape="1,256,256,3" --output_layer=a2b_generator/output_image
+* bazel-bin/tensorflow/tools/benchmark/benchmark_model --graph=~/Desktop/vBox/optimized_graph.pb --show_sizes=false --show_flops=true --input_layer=inputA --input_layer_type=float --input_layer_shape="1,256,256,3" --output_layer=a2b_generator/output_image
 
 
 ## Convert the model to an Intel Movidius graph
