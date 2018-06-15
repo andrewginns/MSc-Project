@@ -69,7 +69,12 @@ All-in-one
 ### Freeze the graph by combining the GrafDef proto and the checkpoints
 
 * cd CycleGAN-Tensorflow-PyTorch
+* Copy checkpoint, and all .ckpt files to directory
 * python freeze.py
+
+### View the graph in Tensorboard
+
+* tensorboard --logdir=logs/ --host localhost --port 8088
 
 ### Summarize the GraphDef to view nodes and other info, should be reduced compared to the graph.pb
 
