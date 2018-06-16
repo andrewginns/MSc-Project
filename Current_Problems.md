@@ -76,3 +76,4 @@ raise ValueError("as_list() is not defined on an unknown TensorShape.")
 ValueError: as_list() is not defined on an unknown TensorShape.
 ~~~~
 * A dialogue has been opened with Movidius support about this https://ncsforum.movidius.com/discussion/865/conversion-of-frozen-tensorflow-graph-to-movidius-graph#latest
+

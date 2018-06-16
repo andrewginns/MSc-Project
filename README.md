@@ -97,6 +97,16 @@ All-in-one
 
 * bazel-bin/tensorflow/tools/benchmark/benchmark_model --graph=/Users/andrewginns/Desktop/vBox/optimized_graph.pb --show_sizes=false --show_flops=true --input_layer=inputA --input_layer_type=float --input_layer_shape="1,256,256,3" --output_layer=a2b_generator/output_image
 
+## Desktop inference
+* Using the checkpoint files (.ckpt)
+    * python test.py --dataset=one_of_the_datasets
+        * Output images are from left to right: original image --> a2b --> b2a
+    * python testa2b.py --dataset=one_of_the_datasets
+        * Output images are from left to right: original image --> a2b
+        
+* Using a model file (.pb)
+    * python pb_test_a2b.py --graph=/path/to/graph.pb --dataset=/path/to/images.jpg
+        * Output images are from left to right: original image --> a2b
 
 ## Convert the model to an Intel Movidius graph
 
