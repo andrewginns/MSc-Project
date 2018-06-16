@@ -12,6 +12,16 @@
     
 * Benchmark to make sure all ops are listed and graph runs
   1. bazel-bin/tensorflow/tools/benchmark/benchmark_model --graph=/Users/andrewginns/Desktop/vBox/optimized_graph.pb --show_sizes=false --show_flops=true --input_layer=inputA --input_layer_type=float --input_layer_shape="1,256,256,3" --output_layer=a2b_generator/output_image
+  
+* Convert to a TFLite model
+  1. Use TF1.8 tools
+  2. bazel-bin/tensorflow/contrib/lite/toco/toco \
+     --input_file=/Users/andrewginns/Desktop/vBox/optimized_graph.pb \
+     --output_file=/Users/andrewginns/Desktop/vBox/graph.lite \
+     --input_format=TENSORFLOW_GRAPHDEF \
+     --output_format=TFLITE \
+     --input_shape=1,256,256,3 \
+     --input_array=inputA \
 
 * Convert to a movidius graph
   1. mvNCCompile /media/sf_vBox/optimized_graph.pb -in inputA -on a2b_generator/output_image

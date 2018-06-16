@@ -5,7 +5,34 @@
 1. The default freeze_graph does not work on CycleGAN due to moving_mean ops
     * A custom implementation of freeze.py is implemented instead
     
-2. freeze.py seems to introduce a node called _SOURCE with type 'NoOp'
+3. Movidius mvNCCompile gives a compilation error when attempting to convert the graph
+~~~~
+mvNCCompile /media/sf_vBox/optimized_graph.pb -in inputA -on a2b_generator/output_image
+/usr/local/bin/ncsdk/Controllers/Parsers/TensorFlowParser/Convolution.py:44: SyntaxWarning: assertion is always true, perhaps remove parentheses?
+assert(False, "Layer type not supported by Convolution: " + obj.type)
+mvNCCompile v02.00, Copyright @ Intel Corporation 2017
+
+/usr/local/lib/python3.5/dist-packages/tensorflow/python/util/tf_inspect.py:45: DeprecationWarning: inspect.getargspec() is deprecated, use inspect.signature() instead
+shape: [1, 256, 256, 3]
+Traceback (most recent call last):
+File "/usr/local/bin/mvNCCompile", line 169, in <module>
+create_graph(args.network, args.image, args.inputnode, args.outputnode, args.outfile, args.nshaves, args.inputsize, args.weights, args.explicit_concat, args.ma2480, args.scheduler, args.new_parser, args)
+File "/usr/local/bin/mvNCCompile", line 148, in create_graph
+load_ret = load_network(args, parser, myriad_config)
+File "/usr/local/bin/ncsdk/Controllers/Scheduler.py", line 100, in load_network
+parse_ret = parse_tensor(arguments, myriad_conf)
+File "/usr/local/bin/ncsdk/Controllers/TensorFlowParser.py", line 319, in parse_tensor
+item_shape = output_item.shape.as_list()
+File "/usr/local/lib/python3.5/dist-packages/tensorflow/python/framework/tensor_shape.py", line 820, in as_list
+raise ValueError("as_list() is not defined on an unknown TensorShape.")
+ValueError: as_list() is not defined on an unknown TensorShape.
+~~~~
+* A dialogue has been opened with Movidius support about this https://ncsforum.movidius.com/discussion/865/conversion-of-frozen-tensorflow-graph-to-movidius-graph#latest
+    
+    
+# Solved
+
+2. freeze.py seems to introduce a node called _SOURCE with type 'NoOp' 
     * This is causing problems with the TFLite conversion
 ~~~~
 toco --input_file=/Users/andrewginns/Desktop/vBox/optimized_graph.pb \
@@ -52,28 +79,4 @@ Op types used: 306 Const, 154 Identity, 52 Mul, 51 Sub, 46 AssignSub, 23 FusedBa
     2. The NoOp can only be seen in the benchmark_model
         * Not shown in tensorboard or any other tools that print nodes of the graph
     3. Becuse of the moving_mean error the graph frozen with the normal method can't be seen in tensorboard or in the other node listing tools
-    
-3. Movidius mvNCCompile gives a compilation error when attempting to convert the graph
-~~~~
-mvNCCompile /media/sf_vBox/optimized_graph.pb -in inputA -on a2b_generator/output_image
-/usr/local/bin/ncsdk/Controllers/Parsers/TensorFlowParser/Convolution.py:44: SyntaxWarning: assertion is always true, perhaps remove parentheses?
-assert(False, "Layer type not supported by Convolution: " + obj.type)
-mvNCCompile v02.00, Copyright @ Intel Corporation 2017
-
-/usr/local/lib/python3.5/dist-packages/tensorflow/python/util/tf_inspect.py:45: DeprecationWarning: inspect.getargspec() is deprecated, use inspect.signature() instead
-shape: [1, 256, 256, 3]
-Traceback (most recent call last):
-File "/usr/local/bin/mvNCCompile", line 169, in <module>
-create_graph(args.network, args.image, args.inputnode, args.outputnode, args.outfile, args.nshaves, args.inputsize, args.weights, args.explicit_concat, args.ma2480, args.scheduler, args.new_parser, args)
-File "/usr/local/bin/mvNCCompile", line 148, in create_graph
-load_ret = load_network(args, parser, myriad_config)
-File "/usr/local/bin/ncsdk/Controllers/Scheduler.py", line 100, in load_network
-parse_ret = parse_tensor(arguments, myriad_conf)
-File "/usr/local/bin/ncsdk/Controllers/TensorFlowParser.py", line 319, in parse_tensor
-item_shape = output_item.shape.as_list()
-File "/usr/local/lib/python3.5/dist-packages/tensorflow/python/framework/tensor_shape.py", line 820, in as_list
-raise ValueError("as_list() is not defined on an unknown TensorShape.")
-ValueError: as_list() is not defined on an unknown TensorShape.
-~~~~
-* A dialogue has been opened with Movidius support about this https://ncsforum.movidius.com/discussion/865/conversion-of-frozen-tensorflow-graph-to-movidius-graph#latest
 

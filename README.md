@@ -117,17 +117,15 @@ All-in-one
 
 ## Convert the model to a TFLite model
 
-* cd tensorflow-1.6
+* cd tensorflow-1.8
   
-* bazel run --config=opt \
-  //tensorflow/contrib/lite/toco:toco -- \
-  --input_file=/Users/andrewginns/Desktop/vBox/optimized_graph.pb \
-  --output_file=/Users/andrewginns/Desktop/vBox/graph.lite \
-  --input_format=TENSORFLOW_GRAPHDEF \
-  --output_format=TFLITE \
-  --input_shape=1,256,256,3 \
-  --input_array=inputA \
-  --output_array=a2b_generator/output_image
+* bazel-bin/tensorflow/contrib/lite/toco/toco \
+    --input_file=/Users/andrewginns/Desktop/vBox/optimized_graph.pb \
+    --output_file=/Users/andrewginns/Desktop/vBox/graph.lite \
+    --input_format=TENSORFLOW_GRAPHDEF \
+    --output_format=TFLITE \
+    --input_shape=1,256,256,3 \
+    --input_array=inputA \
   
 ## Useful commands
 Remove bazel
