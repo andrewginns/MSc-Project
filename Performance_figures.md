@@ -33,14 +33,14 @@ python ckpt_a2b.py
 python pb_a2b.py
 
 ### Epoch_(199)_(562of962).ckpt.data-00000-of-00001
-* MBP 14,3:  seconds, fps
+* MBP 14,3:  234.1944 seconds, fps
 * BC4 1GPU:  12.6921 seconds, fps
 
 ### frozen_graph.pb
-* MBP 14,3:  seconds, fps
+* MBP 14,3:  218.7996 seconds, fps
 * BC4 1GPU:  13.2439 seconds, 23.331fps
 
 ### optimized_graph.pb --transforms=' strip_unused_nodes(type=float, shape="1,256,256,3") remove_nodes(op=Identity, op=CheckNumerics) fold_batch_norms'
-* MBP 14,3:  seconds, fps
+* MBP 14,3:  228.1911 seconds, fps
 * BC4 1GPU:  12.8100 seconds, 24.122fps
 
