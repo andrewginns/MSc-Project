@@ -48,19 +48,20 @@ TFLite reference
 
 * cd tensorflow-1.6.0
 
-* bazel build tensorflow/tools/graph_transforms:summarize_graph
+* ./configure with -march=native
 
-* bazel build tensorflow/python/tools:freeze_graph
+* bazel build --config=opt tensorflow/tools/graph_transforms:summarize_graph
 
-* bazel build tensorflow/tools/benchmark:benchmark_model
+* bazel build --config=opt tensorflow/python/tools:freeze_graph
 
-* bazel build tensorflow/tools/graph_transforms:transform_graph
+* bazel build --config=opt tensorflow/tools/benchmark:benchmark_model
 
-* bazel build tensorflow/contrib/lite/toco:toco
+* bazel build --config=opt tensorflow/tools/graph_transforms:transform_graph
+
+* bazel build --config=opt tensorflow/contrib/lite/toco:toco
 
 All-in-one
-*bazel build tensorflow/tools/graph_transforms:summarize_graph && bazel build tensorflow/python/tools:freeze_graph && bazel build tensorflow/tools/benchmark:benchmark_model && bazel build tensorflow/tools/graph_transforms:transform_graph && bazel build tensorflow/contrib/lite/toco:toco*
-
+*bazel build --config=opt tensorflow/tools/graph_transforms:summarize_graph && bazel build --config=opt tensorflow/python/tools:freeze_graph && bazel build --config=opt tensorflow/tools/benchmark:benchmark_model && bazel build --config=opt tensorflow/tools/graph_transforms:transform_graph && bazel build --config=opt tensorflow/contrib/lite/toco:toco*
 
 ## Using the tools
 
@@ -86,7 +87,7 @@ All-in-one
 
 ### Benchmark the unoptimised model
 
-* bazel run tensorflow/tools/benchmark:benchmark_model -- --graph=/tmp/frozen_graph.pb --show_sizes=true --show_flops=false --input_layer=inputA --input_layer_type=float --input_layer_shape="1,256,256,3" --output_layer=a2b_generator/output_image
+* bazel-bin/tensorflow/tools/benchmark/benchmark_model --graph=/Users/andrewginns/Desktop/vBox/frozen_graph.pb --show_sizes=false --show_flops=true --input_layer=inputA --input_layer_type=float --input_layer_shape="1,256,256,3" --output_layer=a2b_generator/output_image
 
 ### Optimise the model
 
