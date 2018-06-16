@@ -6,6 +6,8 @@ Repo for MSc Advanced Project for the degree of Advanced Computing at the Univer
 
 ## Instructions for use: https://github.com/andrewginns/MSc-Project/blob/master/instructions.md
 
+## Current problems https://github.com/andrewginns/MSc-Project/blob/master/Current_Problems.md
+
 # Requirements for reproduction
 * Ubuntu 16.04.4
 * Movidius Neural Compute Stick
@@ -57,7 +59,7 @@ TFLite reference
 * bazel build tensorflow/contrib/lite/toco:toco
 
 All-in-one
-*bazel build tensorflow/tools/graph_transforms:summarize_graph && bazel build tensorflow/python/tools:freeze_graph && bazel build tensorflow/tools/benchmark:benchmark_model && bazel build tensorflow/python/tools:optimize_for_inference && bazel build tensorflow/contrib/lite/toco:toco*
+*bazel build tensorflow/tools/graph_transforms:summarize_graph && bazel build tensorflow/python/tools:freeze_graph && bazel build tensorflow/tools/benchmark:benchmark_model && bazel build tensorflow/tools/graph_transforms:transform_graph && bazel build tensorflow/contrib/lite/toco:toco*
 
 
 ## Using the tools
