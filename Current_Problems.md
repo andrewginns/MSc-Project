@@ -32,6 +32,7 @@ ValueError: as_list() is not defined on an unknown TensorShape.
     
 # Solved
 
+### Solved using the TF1.8 tools
 2. freeze.py seems to introduce a node called _SOURCE with type 'NoOp' 
     * This is causing problems with the TFLite conversion
 ~~~~
