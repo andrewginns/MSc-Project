@@ -101,11 +101,11 @@ All-in-one
 * Using the checkpoint files (.ckpt)
     * python test.py --dataset=one_of_the_datasets
         * Output images are from left to right: original image --> a2b --> b2a
-    * python testa2b.py --dataset=one_of_the_datasets
+    * python ckpt_a2b.py --checkpoints='/path/to/checkpoints.ckpt' --dataset='/path/to/images.jpg'
         * Output images are from left to right: original image --> a2b
         
 * Using a model file (.pb)
-    * python pb_test_a2b.py --graph=/path/to/graph.pb --dataset=/path/to/images.jpg
+    * python pb_a2b.py --graph='/path/to/.pb' --dataset='/path/to/images.jpg'
         * Output images are from left to right: original image --> a2b
 
 ## Convert the model to an Intel Movidius graph
