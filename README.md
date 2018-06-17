@@ -17,5 +17,6 @@ Repo for MSc Advanced Project for the degree of Advanced Computing at the Univer
   * Tensorflow 1.6 installed (GPU recommended for training)
   * Tensoflow 1.6 source files https://github.com/tensorflow/tensorflow/releases/tag/v1.6.0
   * CycleGAN code from https://github.com/andrewginns/CycleGAN-Tensorflow-PyTorch
+  * Android Device with API level 27 (Oreo 8.1) - For Android inference
   * Movidius Neural Compute Stick(MNCS) - For MNCS inference
   * Movidius Neural Compute SDK 2.04.00 https://github.com/movidius/ncsdk/releases
