@@ -4,7 +4,7 @@ Repo for MSc Advanced Project for the degree of Advanced Computing at the Univer
 ### Core code https://github.com/andrewginns/CycleGAN-Tensorflow-PyTorch
 ### Files https://github.com/andrewginns/CycleGAN-Tensorflow-PyTorch/releases
 
-### Android application for inference https://github.com/andrewginns/CycleGAN-TF-Android/blob/master/README.md
+### Android application for inference https://github.com/andrewginns/CycleGAN-TF-Android
 
 ### Instructions for use: https://github.com/andrewginns/MSc-Project/blob/master/instructions.md
 
