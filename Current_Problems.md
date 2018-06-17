@@ -1,11 +1,7 @@
 #  Current problems
 ## The problem as well as steps to reproduce and fixes in progress (if any)
-
-
-1. The default freeze_graph does not work on CycleGAN due to moving_mean ops
-    * A custom implementation of freeze.py is implemented instead
     
-3. Movidius mvNCCompile gives a compilation error when attempting to convert the graph
+1. Movidius mvNCCompile gives a compilation error when attempting to convert the graph
 ~~~~
 mvNCCompile /media/sf_vBox/optimized_graph.pb -in inputA -on a2b_generator/output_image
 /usr/local/bin/ncsdk/Controllers/Parsers/TensorFlowParser/Convolution.py:44: SyntaxWarning: assertion is always true, perhaps remove parentheses?
@@ -27,10 +23,19 @@ File "/usr/local/lib/python3.5/dist-packages/tensorflow/python/framework/tensor_
 raise ValueError("as_list() is not defined on an unknown TensorShape.")
 ValueError: as_list() is not defined on an unknown TensorShape.
 ~~~~
-* A dialogue has been opened with Movidius support about this https://ncsforum.movidius.com/discussion/865/conversion-of-frozen-tensorflow-graph-to-movidius-graph#latest
+  * A dialogue has been opened with Movidius support about this https://ncsforum.movidius.com/discussion/865/conversion-of-frozen-tensorflow-graph-to-movidius-graph#latest
+
+
+2. The Android app is not showing a live preview of the network output properly
+  * This is likely being caused by input to the network being RGB instead of expected jpeg
+  * Code to convert from camera YUV420 output to jpeg is being developed
     
     
 # Solved
+
+### Solved by writing own freeze graph script
+1. The default freeze_graph does not work on CycleGAN due to moving_mean ops
+* A custom implementation of freeze.py is implemented instead
 
 ### Solved using the TF1.8 tools
 2. freeze.py seems to introduce a node called _SOURCE with type 'NoOp' 
