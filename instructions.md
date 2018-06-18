@@ -75,13 +75,13 @@ python test.py --dataset=one_of_the_datasets
 ~~~~
   * Output images are from left to right: original image --> a2b --> b2a
 ~~~~
-python ckpt_a2b.py --checkpoints='/path/to/checkpoints.ckpt' --dataset='/path/to/images.jpg'
+python ckpt_a2b.py --checkpoints='/path/to/checkpoints.ckpt' --dataset='/path/to/images_folder'
 ~~~~
   * Output images are from left to right: original image --> a2b
 
 Option 2: Using a model file (.pb)
 ~~~~
-python pb_a2b.py --graph='/path/to/.pb' --dataset='/path/to/images.jpg'
+python pb_a2b.py --graph='/path/to/.pb' --dataset='/path/to/image_folder'
 ~~~~
   * Output images are from left to right: original image --> a2b
 
