@@ -3,3 +3,4 @@
 *.plist
 *.xcuserstate
 *.rtf
+.DS_Store

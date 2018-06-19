@@ -1,7 +1,7 @@
 #  Current problems
 ## The problem as well as steps to reproduce and fixes in progress (if any)
     
-1. Movidius mvNCCompile gives a compilation error when attempting to convert the graph
+### Movidius mvNCCompile gives a compilation error when attempting to convert the graph
 ~~~~
 mvNCCompile /media/sf_vBox/optimized_graph.pb -in inputA -on a2b_generator/output_image
 /usr/local/bin/ncsdk/Controllers/Parsers/TensorFlowParser/Convolution.py:44: SyntaxWarning: assertion is always true, perhaps remove parentheses?
@@ -26,10 +26,9 @@ ValueError: as_list() is not defined on an unknown TensorShape.
   * A dialogue has been opened with Movidius support about this https://ncsforum.movidius.com/discussion/865/conversion-of-frozen-tensorflow-graph-to-movidius-graph#latest
 
 
-2. The Android app is not showing a live preview of the network output properly
+### The Android app is not showing a live preview of the network output properly
   * This is likely being caused by input to the network being RGB instead of expected jpeg
   * Code to convert from camera YUV420 output to jpeg is being developed
-    
     
 # Solved
 
@@ -38,7 +37,7 @@ ValueError: as_list() is not defined on an unknown TensorShape.
 * A custom implementation of freeze.py is implemented instead
 
 ### Solved using the TF1.8 tools
-2. freeze.py seems to introduce a node called _SOURCE with type 'NoOp' 
+1. freeze.py seems to introduce a node called _SOURCE with type 'NoOp' 
     * This is causing problems with the TFLite conversion
 ~~~~
 toco --input_file=/Users/andrewginns/Desktop/vBox/optimized_graph.pb \
@@ -52,7 +51,7 @@ toco --input_file=/Users/andrewginns/Desktop/vBox/optimized_graph.pb \
     Abort trap: 6
 ~~~~
     
-3. Investigating problem 2 using summarize_graph seems to give the same output
+2. Investigating problem 2 using summarize_graph seems to give the same output
 * Graph frozen with freeze.py
 ~~~~
 bazel-bin/tensorflow/tools/graph_transforms/summarize_graph --in_graph=/Users/andrewginns/Desktop/vBox/frozen_graph.pb
@@ -85,4 +84,25 @@ Op types used: 306 Const, 154 Identity, 52 Mul, 51 Sub, 46 AssignSub, 23 FusedBa
     2. The NoOp can only be seen in the benchmark_model
         * Not shown in tensorboard or any other tools that print nodes of the graph
     3. Becuse of the moving_mean error the graph frozen with the normal method can't be seen in tensorboard or in the other node listing tools
+    
+### Solved using bazel 0.10.1 and installing NDK 15
+1. The bazel benchmark_model for android is not compiling properly for arm64-v8a
+~~~~
+bazel build -c opt --cxxopt='--std=c++11' //tensorflow/tools/benchmark:benchmark_model --crosstool_top=//external:android/crosstool --host_crosstool_top=@bazel_tools//tools/cpp:toolchain --cpu=arm64-v8a --verbose_failures
+ERROR: No default_toolchain found for cpu 'arm64-v8a'. Valid cpus are: [
+k8,
+local,
+armeabi-v7a,
+x64_windows,
+x64_windows_msvc,
+x64_windows_msys,
+s390x,
+ios_x86_64,
+]
+INFO: Elapsed time: 0.315s
+INFO: 0 processes.
+FAILED: Build did NOT complete successfully (0 packages loaded)
+~~~~
+* https://stackoverflow.com/questions/50915090/how-to-build-tensorflow-benchmark-model-for-android-arm64-v8a
+https://developer.android.com/ndk/guides/
 

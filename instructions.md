@@ -3,12 +3,13 @@
 ## Requirements for reproduction
 * Tested on macOS 10.13 and Ubuntu 16.04.4
 * Python 2.7.12
-* Bazel 0.11.0
-  * https://github.com/bazelbuild/bazel/releases/tag/0.11.0
+* Bazel 0.10.1
+  * https://github.com/bazelbuild/bazel/releases/tag/0.10.1
 * Tensorflow 1.6 installed (GPU recommended for training)
-  * Tensoflow 1.6 source files https://github.com/tensorflow/tensorflow/releases/tag/v1.6.0
+* Tensoflow 1.6 source files - For bazel builds
+* Tensoflow 1.8 source files - For bazel builds
 * CycleGAN code from https://github.com/andrewginns/CycleGAN-Tensorflow-PyTorch
-* Tensoflow 1.8 source files - For TFLite inference
+* Android SDK level 27, Build tools 27.0.3, NDK version 15 for mobile benchmarking
 * Movidius Neural Compute Stick(MNCS) - For MNCS inference
   * Movidius Neural Compute SDK 2.04.00 https://github.com/movidius/ncsdk/releases
   
@@ -36,12 +37,19 @@ bazel build --config=opt tensorflow/tools/graph_transforms:summarize_graph && ba
 ~~~~
 git clone https://github.com/tensorflow/tensorflow/releases/tag/v1.8.0
 
-cd tensorflow-1.6.0/
+cd tensorflow-1.8.0/
+
+./configure with -march=native, SDK level 27, Build tools 27.0.3, NDK version 15
 
 bazel build --config=opt tensorflow/contrib/lite/toco:toco
+
+bazel build --cxxopt=--std=c++11 //tensorflow/tools/benchmark:benchmark_model --config=android_arm64 --cpu=arm64-v8a
+
+// All combined
+bazel build --config=opt tensorflow/contrib/lite/toco:toco && bazel build --cxxopt=--std=c++11 //tensorflow/tools/benchmark:benchmark_model --config=android_arm64 --cpu=arm64-v8a
 ~~~~
 
-## Training the network
+## Training and optimizing network
   1. Navigate to the directory and download training sets
 ~~~~
 cd $HOME/path/to/CycleGAN-Tensorflow-PyTorch
@@ -63,9 +71,23 @@ python freeze.py --checkpoint_path=./outputs/checkpoints/dataset --output_nodes=
 ~~~~
 bazel-bin/tensorflow/tools/graph_transforms/transform_graph --in_graph=/Users/andrewginns/Desktop/vBox/frozen_graph.pb --out_graph=/Users/andrewginns/Desktop/vBox/optimized_graph.pb --inputs=‘inputA’ --outputs='a2b_generator/output_image' --transforms=' strip_unused_nodes(type=float, shape="1,256,256,3") remove_nodes(op=Identity, op=CheckNumerics) fold_batch_norms'
 ~~~~
-  6. Benchmark the graphs - Lists all the ops and checks that the graph runs
+
+## Benchmarking network
+Lists all the ops and checks that the graph runs
+
+  1. Desktop benchmarking
 ~~~~
 bazel-bin/tensorflow/tools/benchmark/benchmark_model --graph=/Users/andrewginns/Desktop/vBox/optimized_graph.pb --show_sizes=false --show_flops=true --input_layer=inputA --input_layer_type=float --input_layer_shape="1,256,256,3" --output_layer=a2b_generator/output_image
+~~~~
+
+  2. Mobile benchmarking
+
+~~~~
+adb push bazel-bin/tensorflow/tools/benchmark/benchmark_model /data/local/tmp
+
+adb push /Users/andrewginns/Desktop/vBox/CycleGAN-Tensorflow-PyTorch/outputs/checkpoints/summer2winter_yosemite/quant_optimized_graph.pb /data/local/tmp/
+
+adb shell "/data/local/tmp/benchmark_model --graph=/data/local/tmp/quant_optimized_graph.pb --show_sizes=false --show_flops=true --input_layer=inputA --input_layer_type=float --input_layer_shape="1,256,256,3" --output_layer=a2b_generator/output_image"
 ~~~~
 
 ## Desktop inference
@@ -133,11 +155,14 @@ bazel-bin/tensorflow/tools/graph_transforms/summarize_graph --in_graph=/tmp/froz
 ## Useful commands
 
 ### Bazel
-  Remove bazel
+  Remove bazel - Linux
 ~~~~
-rm -fr ~/.bazel ~/.bazelrc ~/.cache/bazel
+rm -rf ~/.bazel ~/.bazelrc ~/.cache/bazel
 ~~~~  
-  
+  Remove bazel - macOS
+~~~~  
+rm -rf /usr/local/bin/bazel /usr/local/bin/bazel /usr/local/lib/bazel
+~~~~    
   Install bazel
 ~~~~
 sudo apt-get install pkg-config zip g++ zlib1g-dev unzip python
