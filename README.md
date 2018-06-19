@@ -1,9 +1,9 @@
 # MSc-Project
 Repo for MSc Advanced Project for the degree of Advanced Computing at the University of Bristol
 
-## Training and Desktop inference code: https://github.com/andrewginns/CycleGAN-Tensorflow-PyTorch
+## Network Code: https://github.com/andrewginns/CycleGAN-Tensorflow-PyTorch
 ## Android TF inference code: https://github.com/andrewginns/CycleGAN-TF-Android
-## Files: https://github.com/andrewginns/CycleGAN-Tensorflow-PyTorch/releases
+## Trained models and benchmarks: https://github.com/andrewginns/CycleGAN-Tensorflow-PyTorch/releases
 
 ## Step-by-step instructions: https://github.com/andrewginns/MSc-Project/blob/master/instructions.md
 

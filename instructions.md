@@ -43,10 +43,10 @@ cd tensorflow-1.8.0/
 
 bazel build --config=opt tensorflow/contrib/lite/toco:toco
 
-bazel build --cxxopt=--std=c++11 //tensorflow/tools/benchmark:benchmark_model --config=android_arm64 --cpu=arm64-v8a
+bazel build --config=monolithic --cxxopt=--std=c++11 //tensorflow/tools/benchmark:benchmark_model --config=android_arm64 --cpu=arm64-v8a
 
 // All combined
-bazel build --config=opt tensorflow/contrib/lite/toco:toco && bazel build --cxxopt=--std=c++11 //tensorflow/tools/benchmark:benchmark_model --config=android_arm64 --cpu=arm64-v8a
+bazel build --config=opt tensorflow/contrib/lite/toco:toco && bazel build --config=monolithic --cxxopt=--std=c++11 //tensorflow/tools/benchmark:benchmark_model --config=android_arm64 --cpu=arm64-v8a
 ~~~~
 
 ## Training and optimizing network
