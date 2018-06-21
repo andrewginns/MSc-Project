@@ -3,8 +3,7 @@
 ## Requirements for reproduction
 * Tested on macOS 10.13 and Ubuntu 16.04.4
 * Python 2.7.12
-* Bazel 0.10.1
-  * https://github.com/bazelbuild/bazel/releases/tag/0.10.1
+* Bazel 0.10.1 https://github.com/bazelbuild/bazel/releases/tag/0.10.1
 * Tensorflow 1.6 installed (GPU recommended for training)
 * Tensoflow 1.6 source files - For bazel builds
 * Tensoflow 1.8 source files - For bazel builds
@@ -13,7 +12,53 @@
 * Movidius Neural Compute Stick(MNCS) - For MNCS inference
   * Movidius Neural Compute SDK 2.04.00 https://github.com/movidius/ncsdk/releases
   
-## Building the tools
+## Building Tensorflow (Not mandatory)
+Tensorflow only needs to be built from source if you want to customise the use of AVX, AVX2 and FMA instructions. Tested on Ubuntu 16.04.4 and macOS 10.13
+  * Building from source can enable significant speedup compared to using an official pre-built .whl
+  * The official pre-built .whl files for Tensorflow 1.6+ have AVX enabled by default. Older CPUs may need .whl packages built from source without AVX
+  * These instructions are only for the CPU builds
+  * My custom pre-built files https://github.com/andrewginns/tflow-whls
+    * Includes Tensorflow 1.6 without AVX
+    
+### Requires a working bazel install (Tested on bazel 0.10.1 and 0.11.0)
+  
+Tensorflow 1.6
+~~~~
+git clone https://github.com/tensorflow/tensorflow/releases/tag/v1.6.0
+
+cd tensorflow-1.6.0/
+~~~~
+Tensoflow 1.8
+~~~~
+git clone https://github.com/tensorflow/tensorflow/releases/tag/v1.8.0
+
+cd tensorflow-1.8.0/
+~~~~
+Once your desired source files are downloaded and the directory has been navigated to run
+~~~~
+./configure
+~~~~
+This will start an interactive configuration
+  * You will likely be using the defaul python paths
+  * Enter '-march=native' for the appropriate optimisation flags for the computer you are building on
+  * The other options should all be answered no for a default CPU configuration
+  
+Now you need to build and export the pip package that you will install
+~~~~
+bazel build --config=opt //tensorflow/tools/pip_package:build_pip_package
+
+bazel-bin/tensorflow/tools/pip_package/build_pip_package /path/to/the/built/.whl
+~~~~
+
+This .whl can now be used with pip to install your custom Tensorflow install
+~~~~
+sudo pip install /path/to/the/built/.whl/tensorflow-1.x.x-py2-none-any.whl
+~~~~
+
+  
+## Building the Tensorflow tools
+These tools are seperate to compiling the main Tensorflow library from source
+
   1. Tensorflow 1.6
 ~~~~
 git clone https://github.com/tensorflow/tensorflow/releases/tag/v1.6.0
@@ -77,7 +122,7 @@ Lists all the ops and checks that the graph runs
 
   1. Desktop benchmarking
 ~~~~
-bazel-bin/tensorflow/tools/benchmark/benchmark_model --graph=/Users/andrewginns/Desktop/vBox/optimized_graph.pb --show_sizes=false --show_flops=true --input_layer=inputA --input_layer_type=float --input_layer_shape="1,256,256,3" --output_layer=a2b_generator/output_image
+bazel-bin/tensorflow/tools/benchmark/benchmark_model --graph=/Users/andrewginns/Desktop/vBox/CycleGAN-Tensorflow-PyTorch/outputs/checkpoints/summer2winter_yosemite/optimized_graph.pb --show_sizes=false --show_flops=true --input_layer=inputA --input_layer_type=float --input_layer_shape="1,256,256,3" --output_layer=a2b_generator/output_image
 ~~~~
 
   2. Mobile benchmarking
