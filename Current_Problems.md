@@ -27,8 +27,7 @@ ValueError: as_list() is not defined on an unknown TensorShape.
 
 
 ### The Android app is not showing a live preview of the network output properly
-  * This is likely being caused by input to the network being RGB instead of expected jpeg
-  * Code to convert from camera YUV420 output to jpeg is being developed
+  * Probably due to incorrect conversion of the RGB output from the network to a Bitmapped image
     
 # Solved
 
