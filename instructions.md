@@ -113,8 +113,13 @@ python train.py --dataset=summer2winter_yosemite
 python freeze.py --checkpoint_path=./outputs/checkpoints/dataset --output_nodes=a2b_generator/output_image --output_graph=/tmp/frozen-graph.pb
 ~~~~
   5. Optimize the graph
+optimize_graph.pb
 ~~~~
 bazel-bin/tensorflow/tools/graph_transforms/transform_graph --in_graph=/Users/andrewginns/Desktop/vBox/frozen_graph.pb --out_graph=/Users/andrewginns/Desktop/vBox/optimized_graph.pb --inputs=‘inputA’ --outputs='a2b_generator/output_image' --transforms=' strip_unused_nodes(type=float, shape="1,256,256,3") remove_nodes(op=Identity, op=CheckNumerics) fold_batch_norms'
+~~~~
+2-quant_optimize_graph.pb
+~~~~
+bazel-bin/tensorflow/tools/graph_transforms/transform_graph --in_graph=/Users/andrewginns/Desktop/vBox/frozen_graph.pb --out_graph=/Users/andrewginns/Desktop/vBox/2-quant-optimized_graph.pb --inputs=‘inputA’ --outputs='a2b_generator/output_image' --transforms=' strip_unused_nodes(type=float, shape="1,256,256,3") remove_nodes(op=Identity, op=CheckNumerics) fold_batch_norms quantize_weights strip_unused_nodes sort_by_execution_order '
 ~~~~
 
 ## Benchmarking network
