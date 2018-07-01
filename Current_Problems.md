@@ -25,9 +25,6 @@ ValueError: as_list() is not defined on an unknown TensorShape.
 ~~~~
   * A dialogue has been opened with Movidius support about this https://ncsforum.movidius.com/discussion/865/conversion-of-frozen-tensorflow-graph-to-movidius-graph#latest
 
-
-### The Android app is not showing a live preview of the network output properly
-  * Probably due to incorrect conversion of the RGB output from the network to a Bitmapped image
     
 # Solved
 
@@ -104,4 +101,9 @@ FAILED: Build did NOT complete successfully (0 packages loaded)
 ~~~~
 * https://stackoverflow.com/questions/50915090/how-to-build-tensorflow-benchmark-model-for-android-arm64-v8a
 https://developer.android.com/ndk/guides/
+
+
+### Solved by converting colour space values
+1. The Android app is not showing a live preview of the network output properly
+    * Probably due to incorrect conversion of the RGB output from the network to a Bitmapped image
 
