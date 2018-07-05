@@ -90,6 +90,10 @@ bazel build --config=opt tensorflow/contrib/lite/toco:toco
 
 bazel build --config=monolithic --cxxopt=--std=c++11 //tensorflow/tools/benchmark:benchmark_model --config=android_arm64 --cpu=arm64-v8a
 
+bazel build --config=opt tensorflow/contrib/lite/tools/benchmark:benchmark_model
+
+bazel build --config=monolithic --config=android_arm64 --cxxopt='--std=c++11' tensorflow/contrib/lite/tools/benchmark:benchmark_model
+
 // All combined
 bazel build --config=opt tensorflow/contrib/lite/toco:toco && bazel build --config=monolithic --cxxopt=--std=c++11 //tensorflow/tools/benchmark:benchmark_model --config=android_arm64 --cpu=arm64-v8a
 ~~~~
@@ -122,15 +126,20 @@ bazel-bin/tensorflow/tools/graph_transforms/transform_graph --in_graph=/Users/an
 bazel-bin/tensorflow/tools/graph_transforms/transform_graph --in_graph=/Users/andrewginns/Desktop/vBox/frozen_graph.pb --out_graph=/Users/andrewginns/Desktop/vBox/2-quant-optimized_graph.pb --inputs=‘inputA’ --outputs='a2b_generator/output_image' --transforms=' strip_unused_nodes(type=float, shape="1,256,256,3") remove_nodes(op=Identity, op=CheckNumerics) fold_batch_norms quantize_weights strip_unused_nodes sort_by_execution_order '
 ~~~~
 
-## Benchmarking network
+## Benchmarking the network
 Lists all the ops and checks that the graph runs
 
-  1. Desktop benchmarking
+  1. Desktop benchmarking .pb
 ~~~~
 bazel-bin/tensorflow/tools/benchmark/benchmark_model --graph=/Users/andrewginns/Desktop/vBox/CycleGAN-Tensorflow-PyTorch/outputs/checkpoints/summer2winter_yosemite/optimized_graph.pb --show_sizes=false --show_flops=true --input_layer=inputA --input_layer_type=float --input_layer_shape="1,256,256,3" --output_layer=a2b_generator/output_image
 ~~~~
 
-  2. Mobile benchmarking
+  2. Desktop benchmarking .lite
+~~~~
+bazel-bin/tensorflow/contrib/lite/tools/benchmark/benchmark_model --graph=graph.lite --input_layer="inputA" --input_layer_shape="1,256,256,3" --num_threads=4
+~~~~
+
+  3. Mobile benchmarking .pb
 
 ~~~~
 adb push bazel-bin/tensorflow/tools/benchmark/benchmark_model /data/local/tmp
@@ -138,6 +147,20 @@ adb push bazel-bin/tensorflow/tools/benchmark/benchmark_model /data/local/tmp
 adb push /Users/andrewginns/Desktop/vBox/CycleGAN-Tensorflow-PyTorch/outputs/checkpoints/summer2winter_yosemite/quant_optimized_graph.pb /data/local/tmp/
 
 adb shell "/data/local/tmp/benchmark_model --graph=/data/local/tmp/quant_optimized_graph.pb --show_sizes=false --show_flops=true --input_layer=inputA --input_layer_type=float --input_layer_shape="1,256,256,3" --output_layer=a2b_generator/output_image"
+~~~~
+
+  4. Mobile benchmarking .lite
+
+~~~~
+adb push bazel-bin/tensorflow/contrib/lite/tools/benchmark/benchmark_model /data/local/tmp
+
+adb shell chmod +x /data/local/tmp/benchmark_model
+
+adb push graph.lite /data/local/tmp
+
+adb push /Users/andrewginns/Desktop/vBox/CycleGAN-Tensorflow-PyTorch/outputs/checkpoints/summer2winter_yosemite/quant_optimized_graph.pb /data/local/tmp/
+
+adb shell /data/local/tmp/benchmark_model --graph=/data/local/tmp/mobilenet_quant_v1_224.tflite --input_layer="input" --input_layer_shape="1,256,256,3" --num_threads=4
 ~~~~
 
 ## Desktop inference
