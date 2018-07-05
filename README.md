@@ -1,9 +1,12 @@
 # MSc-Project
 Repo for MSc Advanced Project for the degree of Advanced Computing at the University of Bristol
 
-## Network Code: https://github.com/andrewginns/CycleGAN-Tensorflow-PyTorch
-## Android TF inference code: https://github.com/andrewginns/CycleGAN-TF-Android
-## Trained models and benchmarks: https://github.com/andrewginns/CycleGAN-Tensorflow-PyTorch/releases
+## Network Training and Testing Code: https://github.com/andrewginns/CycleGAN-Tensorflow-PyTorch
+## Android Apps:
+  * CycleGAN Capture - Single image Styl-transfer https://github.com/andrewginns/CycleGAN-Capture
+  * CycleGAN View - Live preview style-transfer https://github.com/andrewginns/CycleGAN-TF-Android
+
+## Trained models: https://github.com/andrewginns/CycleGAN-Tensorflow-PyTorch/releases
 
 ## Step-by-step instructions: https://github.com/andrewginns/MSc-Project/blob/master/instructions.md
 
@@ -11,7 +14,7 @@ Repo for MSc Advanced Project for the degree of Advanced Computing at the Univer
 
 ## Requirements for reproduction
   * CycleGAN code from https://github.com/andrewginns/CycleGAN-Tensorflow-PyTorch
-  * Ubuntu 16.04.4
+  * Ubuntu 16.04.4/macOS 10.13
   * Python 2.7.12
   * Bazel 0.11.0
     * https://github.com/bazelbuild/bazel/releases/tag/0.11.0
