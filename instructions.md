@@ -152,15 +152,15 @@ adb shell "/data/local/tmp/benchmark_model --graph=/data/local/tmp/quant_optimiz
   4. Mobile benchmarking .lite
 
 ~~~~
+bazel build --config=monolithic --config=android_arm64 --cxxopt='--std=c++11' tensorflow/contrib/lite/tools/benchmark:benchmark_model
+
 adb push bazel-bin/tensorflow/contrib/lite/tools/benchmark/benchmark_model /data/local/tmp
 
 adb shell chmod +x /data/local/tmp/benchmark_model
 
-adb push graph.lite /data/local/tmp
+adb push graph.tflite /data/local/tmp
 
-adb push /Users/andrewginns/Desktop/vBox/CycleGAN-Tensorflow-PyTorch/outputs/checkpoints/summer2winter_yosemite/quant_optimized_graph.pb /data/local/tmp/
-
-adb shell /data/local/tmp/benchmark_model --graph=/data/local/tmp/mobilenet_quant_v1_224.tflite --input_layer="input" --input_layer_shape="1,256,256,3" --num_threads=4
+adb shell /data/local/tmp/benchmark_model --graph=graph-float.lite --input_layer="inputA" --input_layer_shape="1,256,256,3" --num_threads=4
 ~~~~
 
 ## Desktop inference
