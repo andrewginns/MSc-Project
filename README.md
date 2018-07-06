@@ -3,8 +3,8 @@ Repo for MSc Advanced Project for the degree of Advanced Computing at the Univer
 
 ## Network Training and Testing Code: https://github.com/andrewginns/CycleGAN-Tensorflow-PyTorch
 ## Android Apps:
-  * CycleGAN Capture - Single image Styl-transfer https://github.com/andrewginns/CycleGAN-Capture
-  * CycleGAN View - Live preview style-transfer https://github.com/andrewginns/CycleGAN-TF-Android
+  * CycleGAN Capture - Single image Style-Transfer https://github.com/andrewginns/CycleGAN-Capture
+  * CycleGAN View - Live preview Style-Transfer https://github.com/andrewginns/CycleGAN-TF-Android
 
 ## Trained models: https://github.com/andrewginns/CycleGAN-Tensorflow-PyTorch/releases
 

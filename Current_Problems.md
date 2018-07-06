@@ -40,7 +40,7 @@ toco --input_file=/Users/andrewginns/Desktop/vBox/optimized_graph.pb \
     >   --output_file=/Users/andrewginns/Desktop/vBox/graph.lite \
     >   --input_format=TENSORFLOW_GRAPHDEF \
     >   --output_format=TFLITE \
-    >    --input_shape=1,256,256,3 \
+    >   --input_shape=1,256,256,3 \
     >   --input_array=inputA \
     >   --output_array=a2b_generator/output_image
     2018-06-16 14:47:07.775019: F tensorflow/core/graph/graph.cc:283] Non-OK-status: status status: Not found: Op type not registered 'NoOp' in binary running on Andrews-MacBook-Pro.local. Make sure the Op and Kernel are registered in the binary running in this process.
