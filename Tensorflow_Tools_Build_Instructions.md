@@ -77,8 +77,8 @@ bazel build --config=monolithic --cxxopt=--std=c++11 //tensorflow/tools/benchmar
 
 bazel build --config=opt tensorflow/contrib/lite/tools/benchmark:benchmark_model
 
-bazel build --config=monolithic --config=android_arm64 --cxxopt='--std=c++11' tensorflow/contrib/lite/tools/benchmark:benchmark_model
+bazel build --config=monolithic --config=android_arm64 --cxxopt='--std=c++11' --copt=-DTFLITE_PROFILING_ENABLED tensorflow/contrib/lite/tools/benchmark:benchmark_model
 
 // Build all in a single command
-bazel build --config=opt tensorflow/contrib/lite/toco:toco && bazel build --config=monolithic --cxxopt=--std=c++11 //tensorflow/tools/benchmark:benchmark_model --config=android_arm64 --cpu=arm64-v8a && bazel build --config=opt tensorflow/contrib/lite/tools/benchmark:benchmark_model && bazel build --config=monolithic --config=android_arm64 --cxxopt='--std=c++11' tensorflow/contrib/lite/tools/benchmark:benchmark_model
+bazel build --config=opt tensorflow/contrib/lite/toco:toco && bazel build --config=monolithic --cxxopt=--std=c++11 //tensorflow/tools/benchmark:benchmark_model --config=android_arm64 --cpu=arm64-v8a && bazel build --config=opt tensorflow/contrib/lite/tools/benchmark:benchmark_model && bazel build --config=monolithic --config=android_arm64 --cxxopt='--std=c++11' --copt=-DTFLITE_PROFILING_ENABLED tensorflow/contrib/lite/tools/benchmark:benchmark_model
 ```
