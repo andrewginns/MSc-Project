@@ -48,7 +48,7 @@ adb shell chmod +x /data/local/tmp/benchmark_model
 
 adb push graph.tflite /data/local/tmp
 
-adb shell /data/local/tmp/benchmark_model --graph=graph.lite --input_layer="inputA" --input_layer_shape="1,256,256,3" --num_threads=4
+adb shell tasket f0 /data/local/tmp/benchmark_model --graph=/data/local/tmp/graph-float.tflite --input_layer="inputA" --input_layer_shape="1,256,256,3" --num_threads=4
 ```
 
 ## 
