@@ -37,45 +37,45 @@ Convert to an optimised TFLite model for Android inference using TF1.8+ tools
 1. Floating point model
 
 ```
-tflite_convert 
---output_file=graph.tflite 
---graph_def_file=frozen_graph.pb 
---input_arrays=inputA 
+tflite_convert \
+--output_file=graph.tflite \
+--graph_def_file=frozen_graph.pb \
+--input_arrays=inputA \
 --output_arrays=a2b_generator/output_image
 
-toco --output_file=toco.tflite 
---graph_def_file=frozen_graph.pb 
---output_format=TFLITE 
---inference_type=FLOAT 
---inference_input_type=FLOAT 
---input_arrays=inputA 
+toco --output_file=toco.tflite \
+--graph_def_file=frozen_graph.pb \
+--output_format=TFLITE \
+--inference_type=FLOAT \
+--inference_input_type=FLOAT \
+--input_arrays=inputA \
 --output_arrays=a2b_generator/output_image
 ```
 
 2. Quantised model **WIP**
 
 ```
-tflite_convert 
---output_file=graph-fakequant.tflite 
---graph_def_file=2-quant-optimized_graph.pb 
---inference_type=QUANTIZED_UINT8 
---input_arrays=inputA 
---output_arrays=a2b_generator/output_image 
---default_ranges_min=0 
---default_ranges_max=6 
---mean_values=128 
+tflite_convert \
+--output_file=graph-fakequant.tflite \
+--graph_def_file=2-quant-optimized_graph.pb \
+--inference_type=QUANTIZED_UINT8 \
+--input_arrays=inputA \
+--output_arrays=a2b_generator/output_image \
+--default_ranges_min=0 \
+--default_ranges_max=6 \
+--mean_values=128 \
 --std_dev_values=127
 
-toco --output_file=toco-quant.tflite 
---graph_def_file=frozen_graph.pb 
---output_format=TFLITE 
---inference_type=QUANTIZED_UINT8 
---inference_input_type=QUANTIZED_UINT8 
---input_arrays=inputA 
---output_arrays=a2b_generator/output_image 
---std_dev_values=127 
---mean_values=128 
---default_ranges_min=0 
---default_ranges_max=6 
+toco --output_file=toco-quant.tflite \
+--graph_def_file=frozen_graph.pb \
+--output_format=TFLITE \
+--inference_type=QUANTIZED_UINT8 \
+--inference_input_type=QUANTIZED_UINT8 \
+--input_arrays=inputA \
+--output_arrays=a2b_generator/output_image \
+--std_dev_values=127 \
+--mean_values=128 \
+--default_ranges_min=0 \
+--default_ranges_max=6 \
 --quantize_weights QUANTIZE_WEIGHTS
 ```
