@@ -1,5 +1,17 @@
 #  Current problems
 ## The problem as well as steps to reproduce and fixes in progress (if any)
+
+### TFLite Android examples are extremely limited
+There are no current examples for TFLite on Android for any image tasks apart from labelled classification. This is slowing development of a TFLite implementation of the project Android applications.
+
+### TFLite does not support required quantised ops in the model
+The TransposeConv op does not have a quantised op equivalent. This means that the generated .tflite model uses float operations instead of uint8 operations.
+~~~~
+2018-07-06 11:12:23.485598: F tensorflow/contrib/lite/toco/graph_transformations/quantize.cc:457] Unimplemented: this graph contains an operator of type TransposeConv for which the quantized form is not yet implemented. Sorry, and patches welcome (that's a relatively fun patch to write, mostly providing the actual quantized arithmetic code for this op).
+Aborted (core dumped)
+~~~~
+* May be possible to create the required patch
+* Otherwise wait for implementation
     
 ### Movidius mvNCCompile gives a compilation error when attempting to convert the graph
 ~~~~

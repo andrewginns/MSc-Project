@@ -18,13 +18,13 @@ Lists all the ops in the model and evaluate performance on different hardware
 ### GraphDef (.pb)
 
 ```
-bazel-bin/tensorflow/tools/benchmark/benchmark_model --graph=/Users/andrewginns/Desktop/vBox/CycleGAN-Tensorflow-PyTorch/outputs/checkpoints/summer2winter_yosemite/optimized_graph.pb --show_sizes=false --show_flops=true --input_layer=inputA --input_layer_type=float --input_layer_shape="1,256,256,3" --output_layer=a2b_generator/output_image
+bazel-bin/tensorflow/tools/benchmark/benchmark_model --graph=/Users/andrewginns/Desktop/vBox/CycleGAN-Tensorflow-PyTorch/outputs/checkpoints/summer2winter_yosemite/optimized_graph.pb --show_sizes=false --show_flops=true --input_layer=inputA --input_layer_type=float --input_layer_shape="1,256,256,3" --output_layer=a2b_generator/output_image --num_threads=-1
 ```
 
 ### TFLite (.tflite)
 
 ```
-bazel-bin/tensorflow/contrib/lite/tools/benchmark/benchmark_model --graph=graph.lite --input_layer="inputA" --input_layer_shape="1,256,256,3" --num_threads=4
+bazel-bin/tensorflow/contrib/lite/tools/benchmark/benchmark_model --graph=graph-float.tflite --input_layer="inputA" --input_layer_shape="1,256,256,3" --num_threads=-1
 ```
 
 ## Mobile benchmarking
@@ -36,7 +36,7 @@ adb push bazel-bin/tensorflow/tools/benchmark/benchmark_model /data/local/tmp
 
 adb push /Users/andrewginns/Desktop/vBox/CycleGAN-Tensorflow-PyTorch/outputs/checkpoints/summer2winter_yosemite/quant_optimized_graph.pb /data/local/tmp/
 
-adb shell "/data/local/tmp/benchmark_model --graph=/data/local/tmp/quant_optimized_graph.pb --show_sizes=false --show_flops=true --input_layer=inputA --input_layer_type=float --input_layer_shape="1,256,256,3" --output_layer=a2b_generator/output_image"
+adb shell "/data/local/tmp/benchmark_model --graph=/data/local/tmp/quant_optimized_graph.pb --show_sizes=false --show_flops=true --input_layer=inputA --input_layer_type=float --input_layer_shape="1,256,256,3" --output_layer=a2b_generator/output_image" --num_threads=-1
 ```
 
 ### TFLite (.tflite)
@@ -48,7 +48,7 @@ adb shell chmod +x /data/local/tmp/benchmark_model
 
 adb push graph.tflite /data/local/tmp
 
-adb shell tasket f0 /data/local/tmp/benchmark_model --graph=/data/local/tmp/graph-float.tflite --input_layer="inputA" --input_layer_shape="1,256,256,3" --num_threads=4
+adb shell tasket f0 /data/local/tmp/benchmark_model --graph=/data/local/tmp/graph-float.tflite --input_layer="inputA" --input_layer_shape="1,256,256,3" --num_threads=-1
 ```
 
 ## 
