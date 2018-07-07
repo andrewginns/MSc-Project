@@ -13,6 +13,8 @@ Work carried out for the completion an MSc degree in Advanced Computing at the U
 
 - numpy
 
+- graphviz
+
 - Tensorflow 1.6 source files
 
 - Tensorflow 1.8+ source files

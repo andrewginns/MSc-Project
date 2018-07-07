@@ -3,6 +3,7 @@
 
 ### TFLite Android examples are extremely limited
 There are no current examples for TFLite on Android for any image tasks apart from labelled classification. This is slowing development of a TFLite implementation of the project Android applications.
+* Working on merging the existing code with the example TFLite code from the Tensorflow-for-poests-2 codelab
 
 ### TFLite does not support required quantised ops in the model
 The TransposeConv op does not have a quantised op equivalent. This means that the generated .tflite model uses float operations instead of uint8 operations.

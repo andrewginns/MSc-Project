@@ -46,9 +46,9 @@ adb push bazel-bin/tensorflow/contrib/lite/tools/benchmark/benchmark_model /data
 
 adb shell chmod +x /data/local/tmp/benchmark_model
 
-adb push graph.tflite /data/local/tmp
+adb push graph-float.tflite /data/local/tmp
 
-adb shell tasket f0 /data/local/tmp/benchmark_model --graph=/data/local/tmp/graph-float.tflite --input_layer="inputA" --input_layer_shape="1,256,256,3" --num_threads=-1
+adb shell taskset f0 /data/local/tmp/benchmark_model --graph=/data/local/tmp/graph-float.tflite --input_layer="inputA" --input_layer_shape="1,256,256,3" --num_threads=-1
 ```
 
 ## 
