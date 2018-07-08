@@ -1,18 +1,18 @@
 #  Current problems
 ## The problem as well as steps to reproduce and fixes in progress (if any)
 
-### Visualisation tools for TFLite graphs are broken
+### 1. Visualisation tools for TFLite graphs are broken
 ```
 bazel-bin/tensorflow/contrib/lite/tools/visualize foo.tflite foo.html
 ```
 Leads to an error about flatbuffers/flatc not found. Issue is currently open on the tensorflow github.
 https://github.com/tensorflow/tensorflow/issues/18857
 
-### TFLite Android examples are extremely limited
+### 2. TFLite Android examples are extremely limited
 There are no current examples for TFLite on Android for any image tasks apart from labelled classification. This is slowing development of a TFLite implementation of the project Android applications.
 * Working on merging the existing code with the example TFLite code from the Tensorflow-for-poests-2 codelab
 
-### TFLite becnhmark can't use the NNAPI
+### 3. TFLite becnhmark can't use the NNAPI
 The NNAPI works when enabled on a demonstration tflite model. When enabled on my own model through
 ```
  adb shell taskset f0 /data/local/tmp/benchmark_model --graph=/data/local/tmp/graph-float.tflite --input_layer="inputA" --input_layer_shape="1,256,256,3" --num_threads=-1 --num_runs=20 --use_nnapi=true
@@ -42,7 +42,7 @@ Aborted
 ```
 I imagine this is either due to my model being a floating point one instead of a uint8 model.
 
-### TFLite does not support required quantised ops in the model
+### 4. TFLite does not support required quantised ops in the model
 The TransposeConv op does not have a quantised op equivalent. This means that the generated .tflite model uses float operations instead of uint8 operations.
 
 ```
@@ -57,7 +57,7 @@ Aborted (core dumped)
 * May be possible to create the required patch
 * Otherwise wait for implementation
     
-### Movidius mvNCCompile gives a compilation error when attempting to convert the graph
+### 5. Movidius mvNCCompile gives a compilation error when attempting to convert the graph
 ```
 mvNCCompile /media/sf_vBox/optimized_graph.pb -in inputA -on a2b_generator/output_image
 /usr/local/bin/ncsdk/Controllers/Parsers/TensorFlowParser/Convolution.py:44: SyntaxWarning: assertion is always true, perhaps remove parentheses?
