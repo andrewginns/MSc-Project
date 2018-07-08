@@ -13,11 +13,15 @@ Work carried out for the completion an MSc degree in Advanced Computing at the U
 
 - numpy
 
+- protobuf 3.5.1
+
+- enum34
+
 - graphviz
 
 - Tensorflow 1.6 source files
 
-- Tensorflow 1.8+ source files
+- Tensorflow 1.8+ source files source files with a configured WORKSPACE
 
 - Bazel 0.10.0 or 0.11.0 https://github.com/bazelbuild/bazel/releases
 
@@ -68,6 +72,10 @@ https://github.com/andrewginns/MSc-Project/blob/master/Model_Optimisation_Instru
 #### Benchmarking
 
 https://github.com/andrewginns/MSc-Project/blob/master/Performance_Evaluation_Instructions.md
+
+#### Visualisation
+
+https://github.com/andrewginns/MSc-Project/blob/master/Visualisation_Instructions.md
 
 #### Current problems
 

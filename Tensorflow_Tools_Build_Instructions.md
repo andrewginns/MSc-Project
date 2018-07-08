@@ -1,6 +1,6 @@
 # Tensorflow Tools Build Instructions
 
-These tools are separate to compiling the main Tensorflow library from source
+Building these tools ahead of use will save time when you want to run the bazel command. Some tools will need to be rebuilt at runtime (i.e. the mobile and desktop benchamrks). These tools are separate to compiling the main Tensorflow library from source
 
 ## Requirements
 
@@ -9,6 +9,8 @@ These tools are separate to compiling the main Tensorflow library from source
 - pip 8.1+
 - six
 - numpy
+- enum34
+- setuptools
 - Bazel 0.10.0 or 0.11.0 https://github.com/bazelbuild/bazel/releases
 - Android Studio: Android SDK level 27, Build tools 27.0.3, NDK version 15
 
@@ -73,12 +75,8 @@ Now build the tools
 ```
 bazel build --config=opt tensorflow/contrib/lite/toco:toco
 
-bazel build --config=monolithic --cxxopt=--std=c++11 //tensorflow/tools/benchmark:benchmark_model --config=android_arm64 --cpu=arm64-v8a
-
 bazel build --config=opt tensorflow/contrib/lite/tools/benchmark:benchmark_model
 
-bazel build --config=monolithic --config=android_arm64 --cxxopt='--std=c++11' --copt=-DTFLITE_PROFILING_ENABLED tensorflow/contrib/lite/tools/benchmark:benchmark_model
-
 // Build all in a single command
-bazel build --config=opt tensorflow/contrib/lite/toco:toco && bazel build --config=monolithic --cxxopt=--std=c++11 //tensorflow/tools/benchmark:benchmark_model --config=android_arm64 --cpu=arm64-v8a && bazel build --config=opt tensorflow/contrib/lite/tools/benchmark:benchmark_model && bazel build --config=monolithic --config=android_arm64 --cxxopt='--std=c++11' --copt=-DTFLITE_PROFILING_ENABLED tensorflow/contrib/lite/tools/benchmark:benchmark_model
+bazel build --config=opt tensorflow/contrib/lite/toco:toco && bazel build --config=opt tensorflow/contrib/lite/tools/benchmark:benchmark_model
 ```

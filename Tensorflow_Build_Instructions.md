@@ -7,6 +7,9 @@
 - pip 8.1+
 - six
 - numpy
+- protobuf 3.5.1
+- enum34
+- setuptools
 - Bazel 0.10.0 or 0.11.0 https://github.com/bazelbuild/bazel/releases
 
 ## Tensorflow CPU Build

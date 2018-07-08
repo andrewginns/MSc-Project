@@ -11,7 +11,9 @@ Allows a visualisation of the computational graphs. Can serve to highlight diffe
 - Tensorflow 1.8+ source files
 - Bazel 0.10.0 or 0.11.0 https://github.com/bazelbuild/bazel/releases
 
-## Create a GraphViz-Dot output
+
+## Visualising GraphDef (.pb) files
+### Create a GraphViz-Dot output
 Tensorflow 1.6+
 ```
 bazel run --config=opt \
@@ -35,6 +37,19 @@ tflite_convert \
   --output_array=a2b_generator/output_image
 ```
 
-## Render to a PDF
+### Render to an SVG
+Inputting the foo.dot file to produce a foo.svg output
+```
+dot -Tsvg -O foo.dot
+```
 
-dot -Tpdf -Gdpi=600 -O foo.dot
+## Visualising TFLite (.tflite) files
+### Build the visualiser
+```
+bazel build tensorflow/contrib/lite/tools:visualize
+```
+
+### Convert the graph to a html output
+```
+bazel-bin/tensorflow/contrib/lite/tools/visualize foo.tflite foo.html
+```

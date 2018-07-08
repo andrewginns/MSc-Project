@@ -9,7 +9,7 @@ Lists all the ops in the model and evaluate performance on different hardware
 - pip 8.1+
 - six
 - numpy
-- Tensorflow 1.8+ source files
+- Tensorflow 1.8+ source files with a configured WORKSPACE
 - Bazel 0.10.0 or 0.11.0 https://github.com/bazelbuild/bazel/releases
 - Android Studio: Android SDK level 27, Build tools 27.0.3, NDK version 15
 
@@ -18,13 +18,13 @@ Lists all the ops in the model and evaluate performance on different hardware
 ### GraphDef (.pb)
 
 ```
-bazel-bin/tensorflow/tools/benchmark/benchmark_model --graph=/Users/andrewginns/Desktop/vBox/CycleGAN-Tensorflow-PyTorch/outputs/checkpoints/summer2winter_yosemite/optimized_graph.pb --show_sizes=false --show_flops=true --input_layer=inputA --input_layer_type=float --input_layer_shape="1,256,256,3" --output_layer=a2b_generator/output_image --num_threads=-1
+bazel build --config=opt tensorflow/tools/benchmark:benchmark_model && bazel-bin/tensorflow/tools/benchmark/benchmark_model --graph=/Users/andrewginns/Desktop/vBox/CycleGAN-Tensorflow-PyTorch/outputs/checkpoints/summer2winter_yosemite/optimized_graph.pb --show_sizes=false --show_flops=true --input_layer=inputA --input_layer_type=float --input_layer_shape="1,256,256,3" --output_layer=a2b_generator/output_image --num_threads=-1
 ```
 
 ### TFLite (.tflite)
 
 ```
-bazel-bin/tensorflow/contrib/lite/tools/benchmark/benchmark_model --graph=graph-float.tflite --input_layer="inputA" --input_layer_shape="1,256,256,3" --num_threads=-1
+bazel build --config=opt tensorflow/contrib/lite/tools/benchmark:benchmark_model && bazel-bin/tensorflow/contrib/lite/tools/benchmark/benchmark_model --graph=graph-float.tflite --input_layer="inputA" --input_layer_shape="1,256,256,3" --num_threads=-1
 ```
 
 ## Mobile benchmarking
@@ -32,16 +32,20 @@ bazel-bin/tensorflow/contrib/lite/tools/benchmark/benchmark_model --graph=graph-
 ### GraphDef (.pb)
 
 ```
+bazel build --config=monolithic --cxxopt=--std=c++11 //tensorflow/tools/benchmark:benchmark_model --config=android_arm64 --cpu=arm64-v8a
+
 adb push bazel-bin/tensorflow/tools/benchmark/benchmark_model /data/local/tmp
 
 adb push /Users/andrewginns/Desktop/vBox/CycleGAN-Tensorflow-PyTorch/outputs/checkpoints/summer2winter_yosemite/quant_optimized_graph.pb /data/local/tmp/
 
-adb shell "/data/local/tmp/benchmark_model --graph=/data/local/tmp/quant_optimized_graph.pb --show_sizes=false --show_flops=true --input_layer=inputA --input_layer_type=float --input_layer_shape="1,256,256,3" --output_layer=a2b_generator/output_image" --num_threads=-1
+adb shell taskset f0 "/data/local/tmp/benchmark_model --graph=/data/local/tmp/optimized_graph.pb --show_sizes=false --show_flops=true --input_layer=inputA --input_layer_type=float --input_layer_shape="1,256,256,3" --output_layer=a2b_generator/output_image" --num_threads=-1
 ```
 
 ### TFLite (.tflite)
 
 ```
+bazel build --config=monolithic --config=android_arm64 --cxxopt='--std=c++11' --copt=-DTFLITE_PROFILING_ENABLED tensorflow/contrib/lite/tools/benchmark:benchmark_model
+
 adb push bazel-bin/tensorflow/contrib/lite/tools/benchmark/benchmark_model /data/local/tmp
 
 adb shell chmod +x /data/local/tmp/benchmark_model
@@ -51,4 +55,9 @@ adb push graph-float.tflite /data/local/tmp
 adb shell taskset f0 /data/local/tmp/benchmark_model --graph=/data/local/tmp/graph-float.tflite --input_layer="inputA" --input_layer_shape="1,256,256,3" --num_threads=-1
 ```
 
-## 
+## Errors
+If you are having errors that look similar to:
+```
+C++ compilation of rule '//tensorflow/contrib/lite/tools/benchmark:benchmark_model_lib' failed (Exit 1)
+```
+Then a liklely cause is that WORKSPACE isn't properly configured through the ./configure command. Check the SDK and NDK paths.
