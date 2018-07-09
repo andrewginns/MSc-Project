@@ -1,5 +1,0 @@
-bazel build --action_env=PATH  --config=opt tensorflow/tools/graph_transforms:summarize_graph && bazel build --config=opt tensorflow/python/tools:freeze_graph && bazel build --config=opt tensorflow/tools/benchmark:benchmark_model && bazel build --config=opt tensorflow/tools/graph_transforms:transform_graph --verbose_failure
-
-bazel build --action_env="LD_LIBRARY_PATH=${LD_LIBRARY_PATH}" --config=opt tensorflow/tools/graph_transforms:summarize_graph && bazel build --config=opt tensorflow/python/tools:freeze_graph && bazel build --config=opt tensorflow/tools/benchmark:benchmark_model && bazel build --config=opt tensorflow/tools/graph_transforms:transform_graph --verbose_failure
-
-Requires system python, GCC 4.8 and bazel 0.9.0
