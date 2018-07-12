@@ -1,6 +1,6 @@
 # Model Optimisation Instructions
 
-Model optimisations turn a trained frozen_graph.pb into various optimised models in different formats (.pb .tflite). These optimisations prepare the model for inference by removing and transforming operations to reduce size and increase speed.
+Model optimisation turns a trained frozen_graph.pb into various optimised models in different formats (.pb .tflite). These optimisations prepare the model for inference by removing and transforming operations to reduce size and increase speed.
 
 ## Requirements
 
@@ -18,23 +18,23 @@ Model optimisations turn a trained frozen_graph.pb into various optimised models
 
 Optimise the model GraphDef for inference using TF1.6 tools
 
-1. Floating point model
+1. Floating point model (optimized-graph.pb)
 
 ```
-bazel build --config=opt tensorflow/tools/graph_transforms:transform_graph && bazel-bin/tensorflow/tools/graph_transforms/transform_graph --in_graph=/Users/andrewginns/Desktop/vBox/frozen_graph.pb --out_graph=/Users/andrewginns/Desktop/vBox/optimized_graph.pb --inputs=‘inputA’ --outputs='a2b_generator/output_image' --transforms=' strip_unused_nodes(type=float, shape="1,256,256,3") remove_nodes(op=Identity, op=CheckNumerics) fold_batch_norms'
+bazel build --config=opt tensorflow/tools/graph_transforms:transform_graph && bazel-bin/tensorflow/tools/graph_transforms/transform_graph --in_graph=/tmp/frozen-graph.pb --out_graph=/tmp/optimized-graph.pb --inputs=‘inputA’ --outputs='a2b_generator/output_image' --transforms='add_default_attributes fold_constants(ignore_errors=true) fold_batch_norms quantize_weights merge_duplicate_nodes sort_by_execution_order'
 ```
 
-2. Quantised model
+2. Quantised model (quant_quant.pb)
 
 ```
-bazel build --config=opt tensorflow/tools/graph_transforms:transform_graph && bazel-bin/tensorflow/tools/graph_transforms/transform_graph --in_graph=/Users/andrewginns/Desktop/vBox/frozen_graph.pb --out_graph=/Users/andrewginns/Desktop/vBox/2-quant-optimized_graph.pb --inputs=‘inputA’ --outputs='a2b_generator/output_image' --transforms=' strip_unused_nodes(type=float, shape="1,256,256,3") remove_nodes(op=Identity, op=CheckNumerics) fold_batch_norms quantize_weights strip_unused_nodes sort_by_execution_order '
+bazel build --config=opt tensorflow/tools/graph_transforms:transform_graph && bazel-bin/tensorflow/tools/graph_transforms/transform_graph --in_graph=/tmp/frozen-graph.pb --out_graph=/tmp/optimized-graph.pb --inputs=‘inputA’ --outputs='a2b_generator/output_image' --transforms='add_default_attributes fold_constants(ignore_errors=true) fold_batch_norms quantize_weights quantize_nodes sort_by_execution_order'
 ```
 
 ## TFLite (.tflite)
 
 Convert to an optimised TFLite model for Android inference using TF1.8+ tools
 
-1. Floating point model
+1. Floating point model (float.tflite)
 
 ```
 tflite_convert \
@@ -52,7 +52,7 @@ toco --output_file=toco.tflite \
 --output_arrays=a2b_generator/output_image
 ```
 
-2. Quantised model **WIP**
+2. Quantised model 
 
 ```
 tflite_convert \

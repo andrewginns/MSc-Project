@@ -17,14 +17,27 @@ Lists all the ops in the model and evaluate performance on different hardware
 
 ### GraphDef (.pb)
 
+Bazel benchmark
 ```
 bazel build --config=opt tensorflow/tools/benchmark:benchmark_model && bazel-bin/tensorflow/tools/benchmark/benchmark_model --graph=/Users/andrewginns/Desktop/vBox/CycleGAN-Tensorflow-PyTorch/outputs/checkpoints/summer2winter_yosemite/optimized_graph.pb --show_sizes=false --show_flops=true --input_layer=inputA --input_layer_type=float --input_layer_shape="1,256,256,3" --output_layer=a2b_generator/output_image --num_threads=-1
+```
+
+Python benchmark
+```
+python pb_a2b.py --graph='/path/to/.pb' --dataset='/path/to/image_folder'
 ```
 
 ### TFLite (.tflite)
 
 ```
 bazel build --config=opt tensorflow/contrib/lite/tools/benchmark:benchmark_model && bazel-bin/tensorflow/contrib/lite/tools/benchmark/benchmark_model --graph=graph-float.tflite --input_layer="inputA" --input_layer_shape="1,256,256,3" --num_threads=-1
+```
+
+### Checkpoints (.ckpt)
+
+Python benchmark
+```
+python ckpt_a2b.py --checkpoints='/path/to/checkpoints.ckpt' --dataset='/path/to/images_folder'
 ```
 
 ## Mobile benchmarking

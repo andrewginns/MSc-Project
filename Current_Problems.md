@@ -1,18 +1,11 @@
 #  Current problems
 ## The problem as well as steps to reproduce and fixes in progress (if any)
 
-### 1. Visualisation tools for TFLite graphs are broken
-```
-bazel-bin/tensorflow/contrib/lite/tools/visualize foo.tflite foo.html
-```
-Leads to an error about flatbuffers/flatc not found. Issue is currently open on the tensorflow github.
-https://github.com/tensorflow/tensorflow/issues/18857
-
-### 2. TFLite Android examples are extremely limited
+### 1. TFLite Android examples are extremely limited
 There are no current examples for TFLite on Android for any image tasks apart from labelled classification. This is slowing development of a TFLite implementation of the project Android applications.
 * Working on merging the existing code with the example TFLite code from the Tensorflow-for-poests-2 codelab
 
-### 3. TFLite becnhmark can't use the NNAPI
+### 2. TFLite becnhmark can't use the NNAPI
 The NNAPI works when enabled on a demonstration tflite model. When enabled on my own model through
 ```
  adb shell taskset f0 /data/local/tmp/benchmark_model --graph=/data/local/tmp/graph-float.tflite --input_layer="inputA" --input_layer_shape="1,256,256,3" --num_threads=-1 --num_runs=20 --use_nnapi=true
@@ -42,8 +35,10 @@ Aborted
 ```
 I imagine this is either due to my model being a floating point one instead of a uint8 model.
 
-### 4. TFLite does not support required quantised ops in the model
+### 3. TFLite does not support required quantised ops in the model
 The TransposeConv op does not have a quantised op equivalent. This means that the generated .tflite model uses float operations instead of uint8 operations.
+
+TransposeConv is a convolution going in the opposite direction to a standard convolution. This goes from the shape of the output to the shape of the input.
 
 ```
 tflite_convert --output_file=graph-fakequant.tflite --graph_def_file=frozen_graph.pb --inference_type=QUANTIZED_UINT8 --input_arrays=inputA --output_arrays=a2b_generator/output_image --default_ranges_min=0 --default_ranges_max=6 --mean_values=128 --std_dev_values=127
@@ -57,7 +52,7 @@ Aborted (core dumped)
 * May be possible to create the required patch
 * Otherwise wait for implementation
     
-### 5. Movidius mvNCCompile gives a compilation error when attempting to convert the graph
+### 4. Movidius mvNCCompile gives a compilation error when attempting to convert the graph
 ```
 mvNCCompile /media/sf_vBox/optimized_graph.pb -in inputA -on a2b_generator/output_image
 /usr/local/bin/ncsdk/Controllers/Parsers/TensorFlowParser/Convolution.py:44: SyntaxWarning: assertion is always true, perhaps remove parentheses?
@@ -80,6 +75,14 @@ raise ValueError("as_list() is not defined on an unknown TensorShape.")
 ValueError: as_list() is not defined on an unknown TensorShape.
 ```
   * A dialogue has been opened with Movidius support about this https://ncsforum.movidius.com/discussion/865/conversion-of-frozen-tensorflow-graph-to-movidius-graph#latest
+
+### 5. Quantized nodes give incorrect output in the model
+The GrafDef generated with a quantized_nodes transform applied produces incorrect output. The Quantised model (quant_quant.pb)
+
+```
+bazel build --config=opt tensorflow/tools/graph_transforms:transform_graph && bazel-bin/tensorflow/tools/graph_transforms/transform_graph --in_graph=/tmp/frozen-graph.pb --out_graph=/tmp/optimized-graph.pb --inputs=‘inputA’ --outputs='a2b_generator/output_image' --transforms='add_default_attributes fold_constants(ignore_errors=true) fold_batch_norms quantize_weights quantize_nodes sort_by_execution_order'
+```
+Possibly due to the incorrect quantization of the colour values in the network meaning that the colours are not preserved correctly.
 
     
 # Solved
@@ -163,3 +166,38 @@ https://developer.android.com/ndk/guides/
 1. The Android app is not showing a live preview of the network output properly
     * Probably due to incorrect conversion of the RGB output from the network to a Bitmapped image
 
+### Solved by cloning, making and linking flatbuffers manually
+1. Visualisation tools for TFLite graphs are broken
+```
+bazel-bin/tensorflow/contrib/lite/tools/visualize foo.tflite foo.html
+```
+Leads to an error about flatbuffers/flatc not found.
+https://github.com/tensorflow/tensorflow/issues/18857
+
+1. Clone https://github.com/google/flatbuffers
+2. Extract and navigate to the flatbuffers-master folder
+3. Run the appropriate cmake command
+```
+cmake -G "Unix Makefiles"
+cmake -G "Visual Studio 10"
+cmake -G "Xcode"
+```
+4. Make
+```
+make
+```
+5. Test that it was successful
+```
+./flattests
+```
+6. Navigate to your tensorflow-master folder
+7. Edit tensorflow/contrib/lite/tools/visualize.py
+- Change the _BINARY = path/to/flatc/file/in/cloned/flatbuffers/folder
+- Change the _SCHEMA =absolute/path/to/schema.fbs
+8. Your TFLite visualise command should now work!
+
+For reference my paths looks like:
+```
+_SCHEMA = "home/user/Downloads/tensorflow-master/tensorflow/contrib/lite/schema/schema.fbs"
+_BINARY = "home/user/Downloads/flatbuffers-master/flatc"
+```
