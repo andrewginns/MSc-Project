@@ -1,9 +1,18 @@
 #  Current problems
 ## The problem as well as steps to reproduce and fixes in progress (if any)
 
-### 1. TFLite Android examples are extremely limited
-There are no current examples for TFLite on Android for any image tasks apart from labelled classification. This is slowing development of a TFLite implementation of the project Android applications.
-* Working on merging the existing code with the example TFLite code from the Tensorflow-for-poests-2 codelab
+### 1. TFLite Android cannot create a MappedByteBuffer of the tflite model
+* Tested in both the tensorflow-for-poets-2 codelab and a basic TFLite wrapper
+* Model can be successfully mapped and benchmarked using tensorflow/contrib/lite/tools/benchmark:benchmark_model
+
+```
+A/libc: Fatal signal 6 (SIGABRT), code -6 in tid 4333 (dp.thexor), pid 4333 (dp.thexor)
+```
+
+Seems to be linked to an incorrect startOffset and declaredLength values
+* Fixing these values to a known-good constant from another model allows the model to load successfully.
+
+StackOverflow issue posted here https://stackoverflow.com/questions/51341554/tflite-android-mode-file-will-not-load-startoffset-and-declaredlength-problems
 
 ### 2. TFLite becnhmark can't use the NNAPI
 The NNAPI works when enabled on a demonstration tflite model. When enabled on my own model through
