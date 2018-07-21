@@ -26,7 +26,7 @@ bazel build tensorflow/python/tools:freeze_graph && bazel-bin/tensorflow/python/
 
 3. Transform a frozen GraphDef using the transform_graph tool
 ```
-bazel build --config=opt tensorflow/tools/graph_transforms:transform_graph && bazel-bin/tensorflow/tools/graph_transforms/transform_graph --in_graph=/tmp/frozen_graph.pb --out_graph=/tmp/movidius_graph.pb --inputs=‘inputA’ --outputs='a2b_generator/output_image' --transforms='add_default_attributes fold_constants(ignore_errors=true) fold_batch_norms merge_duplicate_nodes sort_by_execution_order'
+bazel build --config=opt tensorflow/tools/graph_transforms:transform_graph && bazel-bin/tensorflow/tools/graph_transforms/transform_graph --in_graph=/tmp/frozen_graph.pb --out_graph=/tmp/movidius_graph.pb --inputs=‘inputA’ --outputs='a2b_generator/output_image' --transforms=' strip_unused_nodes(type=float, shape="1,256,256,3") remove_nodes(op=Identity, op=CheckNumerics) add_default_attributes fold_constants(ignore_errors=true) fold_batch_norms merge_duplicate_nodes'
 ```
 4. Convert the inference optimised graph to a movidius graph format
 ```
