@@ -84,6 +84,8 @@ raise ValueError("as_list() is not defined on an unknown TensorShape.")
 ValueError: as_list() is not defined on an unknown TensorShape.
 ```
   * A dialogue has been opened with Movidius support about this https://ncsforum.movidius.com/discussion/865/conversion-of-frozen-tensorflow-graph-to-movidius-graph#latest
+  
+  * Issue has been narrowed down to the Placeholder Tensor. This has the shape ?, 600,600,3 which the conversion tool seems to not like.
 
 ### 5. Quantized nodes give incorrect output in the model
 The GrafDef generated with a quantized_nodes transform applied produces incorrect output. The Quantised model (quant_quant.pb)
