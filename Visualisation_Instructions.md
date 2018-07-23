@@ -28,7 +28,7 @@ bazel run --config=opt \
 ```
 Tensorflow 1.9+
 ```
-tflite_convert \
+bazel run //tensorflow/contrib/lite/python:tflite_convert \
   --graph_def_file=frozen_graph.pb \
   --output_file=foo.dot \
   --output_format=GRAPHVIZ_DOT \
@@ -40,7 +40,7 @@ tflite_convert \
 ### Render to an SVG
 Inputting the foo.dot file to produce a foo.svg output
 ```
-dot -Tsvg -O foo.dot
+dot -Tsvg -O foo.dot > foo.svg
 ```
 
 ## Visualising TFLite (.tflite) files
