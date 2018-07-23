@@ -1,6 +1,7 @@
 # Performance Evaluation Instructions
 
 Lists all the ops in the model and evaluate performance on different hardware
+https://docs.google.com/spreadsheets/d/1_2VHXeiNVBB-4_zcDo2q9ygWWfR14UTl3hZa7M8g1vo/edit?usp=sharing
 
 ## Requirements
 
