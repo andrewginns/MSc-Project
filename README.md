@@ -107,7 +107,7 @@ tensorboard --logdir=logs/ --host localhost --port 8088
 #### Summarize the GraphDef to view nodes and other info, should be reduced compared to the graph.pb
 
 ```
-bazel-bin/tensorflow/tools/graph_transforms/summarize_graph --in_graph=/tmp/frozen_graph.pb
+bazel build tensorflow/tools/graph_transforms:summarize_graph && bazel-bin/tensorflow/tools/graph_transforms/summarize_graph --in_graph=/home/andrew/Downloads/frozen-graph.pb --in_graph=/tmp/frozen_graph.pb
 ```
 
 
