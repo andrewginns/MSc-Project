@@ -17,6 +17,14 @@ In the CycleGAN directory
 python list_nodes_from_pb.py /path/to/grafdef.pb
 ```
 
+## View a GraphDef (.pb) in Tensorboard
+In the CycleGAN directory
+```
+python pb_view_tensorboard.py --graph=/home/andrew/Downloads/apple2orange.pb
+
+tensorboard --logdir=/tmp/tensorboard
+```
+
 ## Visualising GraphDef (.pb) files
 ### Create a GraphViz-Dot output
 Tensorflow 1.6+
