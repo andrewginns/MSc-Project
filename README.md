@@ -141,7 +141,7 @@ chmod +x bazel-0.11.0-installer-linux-x86_64.sh
 
 export PATH="$PATH:$HOME/bin"
 ```
-
+You may need to add "export PATH="PATH:$HOME/bin" to the ~/.bash_profile
 
 
 ## Additional Resources
