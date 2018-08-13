@@ -20,7 +20,7 @@ python list_nodes_from_pb.py /path/to/grafdef.pb
 ## View a GraphDef (.pb) in Tensorboard
 In the CycleGAN directory
 ```
-python pb_view_tensorboard.py --graph=/home/andrew/Downloads/apple2orange.pb
+python pb_view_tensorboard.py --graph=/path/to/grafdef.pb
 
 tensorboard --logdir=/tmp/tensorboard
 ```
