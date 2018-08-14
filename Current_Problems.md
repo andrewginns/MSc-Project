@@ -63,6 +63,62 @@ Aborted (core dumped)
     
 ### 4. Movidius mvNCCompile gives a compilation error when attempting to convert the graph
 ```
+mvNCCompile /tmp/mov.pb -in inputA -on a2b_generator/output_image
+/usr/local/bin/ncsdk/Controllers/Parsers/TensorFlowParser/Convolution.py:44: SyntaxWarning: assertion is always true, perhaps remove parentheses?
+  assert(False, "Layer type not supported by Convolution: " + obj.type)
+mvNCCompile v02.00, Copyright @ Intel Corporation 2017
+
+/usr/local/lib/python3.5/dist-packages/tensorflow/python/util/tf_inspect.py:45: DeprecationWarning: inspect.getargspec() is deprecated, use inspect.signature() instead
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.5/dist-packages/tensorflow/python/framework/common_shapes.py", line 686, in _call_cpp_shape_fn_impl
+    input_tensors_as_shapes, status)
+  File "/usr/local/lib/python3.5/dist-packages/tensorflow/python/framework/errors_impl.py", line 516, in __exit__
+    c_api.TF_GetCode(self.status.status))
+tensorflow.python.framework.errors_impl.InvalidArgumentError: Shape must be rank 4 but is rank 0 for 'a2b_generator/Conv2d_transpose/conv2d_transpose' (op: 'Conv2DBackpropInput') with input shapes: ?, ?, ? and with input tensors computed as partial shapes: input[0] = [].
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/bin/mvNCCompile", line 169, in <module>
+    create_graph(args.network, args.image, args.inputnode, args.outputnode, args.outfile, args.nshaves, args.inputsize, args.weights, args.explicit_concat, args.ma2480, args.scheduler, args.new_parser, args)
+  File "/usr/local/bin/mvNCCompile", line 148, in create_graph
+    load_ret = load_network(args, parser, myriad_config)
+  File "/usr/local/bin/ncsdk/Controllers/Scheduler.py", line 100, in load_network
+    parse_ret = parse_tensor(arguments, myriad_conf)
+  File "/usr/local/bin/ncsdk/Controllers/TensorFlowParser.py", line 212, in parse_tensor
+    tf.import_graph_def(graph_def, name="")
+  File "/usr/local/lib/python3.5/dist-packages/tensorflow/python/util/deprecation.py", line 432, in new_func
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.5/dist-packages/tensorflow/python/framework/importer.py", line 687, in import_graph_def
+    ops.set_shapes_for_outputs(op)
+  File "/usr/local/lib/python3.5/dist-packages/tensorflow/python/framework/ops.py", line 2496, in set_shapes_for_outputs
+    return _set_shapes_for_outputs(op)
+  File "/usr/local/lib/python3.5/dist-packages/tensorflow/python/framework/ops.py", line 2469, in _set_shapes_for_outputs
+    shapes = shape_func(op)
+  File "/usr/local/lib/python3.5/dist-packages/tensorflow/python/framework/ops.py", line 2399, in call_with_requiring
+    return call_cpp_shape_fn(op, require_shape_fn=True)
+  File "/usr/local/lib/python3.5/dist-packages/tensorflow/python/framework/common_shapes.py", line 627, in call_cpp_shape_fn
+    require_shape_fn)
+  File "/usr/local/lib/python3.5/dist-packages/tensorflow/python/framework/common_shapes.py", line 691, in _call_cpp_shape_fn_impl
+    raise ValueError(err.message)
+ValueError: Shape must be rank 4 but is rank 0 for 'a2b_generator/Conv2d_transpose/conv2d_transpose' (op: 'Conv2DBackpropInput') with input shapes: ?, ?, ? and with input tensors computed as partial shapes: input[0] = [].
+```
+  * A dialogue has been opened with Movidius support about this https://ncsforum.movidius.com/discussion/865/conversion-of-
+
+### 5. Quantized nodes give incorrect output in the model
+The GrafDef generated with a quantized_nodes transform applied produces incorrect output. The Quantised model (quant_quant.pb)
+
+```
+bazel build --config=opt tensorflow/tools/graph_transforms:transform_graph && bazel-bin/tensorflow/tools/graph_transforms/transform_graph --in_graph=/tmp/frozen-graph.pb --out_graph=/tmp/optimized-graph.pb --inputs=‘inputA’ --outputs='a2b_generator/output_image' --transforms='add_default_attributes fold_constants(ignore_errors=true) fold_batch_norms quantize_weights quantize_nodes sort_by_execution_order'
+```
+Possibly due to the incorrect quantization of the colour values in the network meaning that the colours are not preserved correctly.
+
+    
+# Solved
+
+### Solved by adding add_shape=True to freeze graph program
+1. Movidius mvNCCompile gives a compilation error when attempting to convert the graph
+```
 mvNCCompile /media/sf_vBox/optimized_graph.pb -in inputA -on a2b_generator/output_image
 /usr/local/bin/ncsdk/Controllers/Parsers/TensorFlowParser/Convolution.py:44: SyntaxWarning: assertion is always true, perhaps remove parentheses?
 assert(False, "Layer type not supported by Convolution: " + obj.type)
@@ -86,17 +142,6 @@ ValueError: as_list() is not defined on an unknown TensorShape.
   * A dialogue has been opened with Movidius support about this https://ncsforum.movidius.com/discussion/865/conversion-of-frozen-tensorflow-graph-to-movidius-graph#latest
   
   * Issue has been narrowed down to the Placeholder Tensor. This has the shape ?, 600,600,3 which the conversion tool seems to not like.
-
-### 5. Quantized nodes give incorrect output in the model
-The GrafDef generated with a quantized_nodes transform applied produces incorrect output. The Quantised model (quant_quant.pb)
-
-```
-bazel build --config=opt tensorflow/tools/graph_transforms:transform_graph && bazel-bin/tensorflow/tools/graph_transforms/transform_graph --in_graph=/tmp/frozen-graph.pb --out_graph=/tmp/optimized-graph.pb --inputs=‘inputA’ --outputs='a2b_generator/output_image' --transforms='add_default_attributes fold_constants(ignore_errors=true) fold_batch_norms quantize_weights quantize_nodes sort_by_execution_order'
-```
-Possibly due to the incorrect quantization of the colour values in the network meaning that the colours are not preserved correctly.
-
-    
-# Solved
 
 ### Solved by writing own freeze graph script
 1. The default freeze_graph does not work on CycleGAN due to moving_mean ops
