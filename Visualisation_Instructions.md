@@ -11,6 +11,19 @@ Allows a visualisation of the computational graphs. Can serve to highlight diffe
 - Tensorflow 1.8+ source files
 - Bazel 0.10.0 or 0.11.0 https://github.com/bazelbuild/bazel/releases
 
+## List nodes in GraphDef (.pb) files
+In the CycleGAN directory
+```
+python list_nodes_from_pb.py /path/to/grafdef.pb
+```
+
+## View a GraphDef (.pb) in Tensorboard
+In the CycleGAN directory
+```
+python pb_view_tensorboard.py --graph=/path/to/grafdef.pb
+
+tensorboard --logdir=/tmp/tensorboard
+```
 
 ## Visualising GraphDef (.pb) files
 ### Create a GraphViz-Dot output

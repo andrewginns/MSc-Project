@@ -65,7 +65,7 @@ cd tensorflow-1.8.0/
 
 This will start an interactive configuration
 
-- You will likely be using the defaul python paths
+- You will likely be using the default python paths
 - Enter '-march=native' for the appropriate optimisation flags for the computer you are building on
 - Choose to configure the interactive WORKSPACE with SDK level 27, Build tools 27.0.3 and NDK version 15
 - The other options should all be answered no for a default CPU configuration
