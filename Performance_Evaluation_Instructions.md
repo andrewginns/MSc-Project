@@ -59,17 +59,20 @@ adb shell taskset f0 "/data/local/tmp/benchmark_model --graph=/data/local/tmp/op
 ### TFLite (.tflite)
 bazel 0.15.0, SDK API level 27, NDK 15, Build tools 27.0.3, tensorflow 1.10
 ```
-bazel build --config=monolithic --config=android_arm64 --cxxopt='--std=c++11' --copt=-DTFLITE_PROFILING_ENABLED tensorflow/contrib/lite/tools/benchmark:benchmark_model
 
-adb shell mkdir /data/local/tmp/tflite
+bazel build -c opt \
+  --config=android_arm \
+  --cxxopt='--std=c++11' \
+  tensorflow/contrib/lite/tools/benchmark:benchmark_model
 
-adb push bazel-bin/tensorflow/contrib/lite/tools/benchmark/benchmark_model /data/local/tmp/tflite
+adb push bazel-bin/tensorflow/contrib/lite/tools/benchmark/benchmark_model /data/local/tmp/tflite/benchmark_model
 
 adb shell chmod +x /data/local/tmp/tflite/benchmark_model
 
 adb push float.tflite /data/local/tmp
 
-adb shell taskset f0 /data/local/tmp/tflite/benchmark_model --graph=/data/local/tmp/graph-float.tflite --input_layer="inputA" --input_layer_shape="1,256,256,3" --num_threads=-1
+adb shell taskset f0 /data/local/tmp/tflite/benchmark_model --graph=/data/local/tmp/float.tflite --input_layer="inputA" --input_layer_shape="1,256,256,3" --num_threads=-1
+
 ```
 
 ## Errors
