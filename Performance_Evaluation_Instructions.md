@@ -31,7 +31,7 @@ python pb_a2b.py --graph='/path/to/.pb' --dataset='/path/to/image_folder'
 ### TFLite (.tflite)
 bazel 0.15.0, SDK API level 27, NDK 15, Build tools 27.0.3, tensorflow 1.10
 ```
-bazel build --config=opt tensorflow/contrib/lite/tools/benchmark:benchmark_model && bazel-bin/tensorflow/contrib/lite/tools/benchmark/benchmark_model --graph=graph-float.tflite --input_layer="inputA" --input_layer_shape="1,256,256,3" --num_threads=-1
+bazel build --config=opt tensorflow/contrib/lite/tools/benchmark:benchmark_model && bazel-bin/tensorflow/contrib/lite/tools/benchmark/benchmark_model --graph=/home/andrew/Downloads/float.tflite --input_layer="inputA" --input_layer_shape="1,256,256,3" --num_threads=-1 --show_sizes=false --show_flops=true
 ```
 
 ### Checkpoints (.ckpt)
